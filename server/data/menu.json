@@ -1,0 +1,122 @@
+{
+  "categories": [
+    {
+      "id": "boissons",
+      "name": "Boissons",
+      "icon": "☕",
+      "products": [
+        {
+          "id": "cafe",
+          "name": "Café",
+          "price": 2.50,
+          "description": "Espresso italien"
+        },
+        {
+          "id": "the",
+          "name": "Thé",
+          "price": 2.00,
+          "description": "Thé vert ou noir"
+        },
+        {
+          "id": "jus",
+          "name": "Jus d'orange",
+          "price": 3.50,
+          "description": "100% pur jus"
+        },
+        {
+          "id": "biere",
+          "name": "Bière pression",
+          "price": 5.00,
+          "description": "33cl"
+        },
+        {
+          "id": "vin",
+          "name": "Verre de vin",
+          "price": 4.50,
+          "description": "Rouge ou blanc"
+        },
+        {
+          "id": "eau",
+          "name": "Eau minérale",
+          "price": 2.00,
+          "description": "50cl"
+        }
+      ]
+    },
+    {
+      "id": "snacks",
+      "name": "Snacks",
+      "icon": "🍟",
+      "products": [
+        {
+          "id": "chips",
+          "name": "Chips",
+          "price": 3.00,
+          "description": "Différents parfums"
+        },
+        {
+          "id": "olives",
+          "name": "Olives",
+          "price": 3.50,
+          "description": "Olives marinées"
+        },
+        {
+          "id": "cacahuetes",
+          "name": "Cacahuètes",
+          "price": 2.50,
+          "description": "Salées"
+        }
+      ]
+    },
+    {
+      "id": "planches",
+      "name": "Planches",
+      "icon": "🧀",
+      "products": [
+        {
+          "id": "charcuterie",
+          "name": "Planche charcuterie",
+          "price": 12.00,
+          "description": "Sélection de charcuterie française"
+        },
+        {
+          "id": "fromage",
+          "name": "Planche fromage",
+          "price": 11.00,
+          "description": "Fromages affinés"
+        },
+        {
+          "id": "mixte",
+          "name": "Planche mixte",
+          "price": 14.00,
+          "description": "Charcuterie et fromage"
+        }
+      ]
+    },
+    {
+      "id": "sandwichs",
+      "name": "Sandwichs",
+      "icon": "🥪",
+      "products": [
+        {
+          "id": "jambon",
+          "name": "Sandwich jambon-beurre",
+          "price": 5.50,
+          "description": "Pain frais et jambon blanc"
+        },
+        {
+          "id": "poulet",
+          "name": "Sandwich poulet",
+          "price": 6.50,
+          "description": "Poulet grillé, salade, tomate"
+        },
+        {
+          "id": "veggie",
+          "name": "Sandwich végétarien",
+          "price": 6.00,
+          "description": "Légumes grillés et houmous"
+        }
+      ]
+    }
+  ]
+}
