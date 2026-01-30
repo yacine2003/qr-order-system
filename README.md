@@ -34,9 +34,11 @@ Système **complet, moderne et professionnel** de commande via QR code pour bar/
 - ✅ Gestion des statuts (nouvelle → préparation → prête → servie)
 - ✅ Filtres et recherche
 - ✅ Nettoyage automatique
+- ✅ **Gestion des identifiants** (modification sans code)
 
 ### 🔒 Sécurité
 - ✅ **Authentification admin** (HTTP Basic Auth)
+- ✅ **Interface de gestion des identifiants**
 - ✅ Validation côté serveur
 - ✅ Rate limiting
 - ✅ Protection injection
@@ -84,6 +86,7 @@ npm start
 - **Démarrer rapidement** → [`QUICKSTART.md`](QUICKSTART.md)
 - **Utiliser au quotidien** → [`GUIDE_UTILISATEUR.md`](GUIDE_UTILISATEUR.md)
 - **Configurer la sécurité** → [`AUTHENTICATION.md`](AUTHENTICATION.md)
+- **Modifier les identifiants** → [`FEATURE_SETTINGS.md`](FEATURE_SETTINGS.md)
 - **Déployer en ligne** → [`DEPLOYMENT.md`](DEPLOYMENT.md)
 - **Modifier le menu** → [`server/data/menu.json`](server/data/menu.json)
 - **Créer QR codes** → [`qr-codes/README.md`](qr-codes/README.md)

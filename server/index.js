@@ -32,6 +32,7 @@ app.use('/api/orders', orderLimiter, require('./routes/orders'));
 
 // 🔒 Routes API protégées (admin uniquement)
 app.use('/api/menu-admin', requireAuth, require('./routes/menuAdmin'));
+app.use('/api/admin', requireAuth, require('./routes/adminSettings'));
 
 // Route de test
 app.get('/api/health', (req, res) => {

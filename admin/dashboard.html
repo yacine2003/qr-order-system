@@ -58,13 +58,16 @@
             <p class="text-sm text-gray-500">Gestion des commandes</p>
           </div>
         </div>
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-4 flex-wrap gap-2">
           <div id="connection-status" class="flex items-center space-x-2">
             <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
             <span class="text-sm text-gray-600">Déconnecté</span>
           </div>
           <button onclick="location.href='/admin/menu-manager.html'" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 font-medium transition-all">
             📋 Gérer le menu
+          </button>
+          <button onclick="location.href='/admin/settings.html'" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 font-medium transition-all">
+            ⚙️ Paramètres
           </button>
           <a href="/?from=admin" target="_blank" class="text-primary hover:text-primary/80 font-medium inline-flex items-center">
             👁️ Voir le menu
