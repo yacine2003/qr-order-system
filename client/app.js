@@ -8,6 +8,7 @@ class OrderApp {
   }
 
   async init() {
+    this.checkAdminMode(); // Vérifier si on vient de l'admin
     this.showLoader(true);
     await this.loadMenu();
     this.loadCartFromStorage();
@@ -15,6 +16,19 @@ class OrderApp {
     this.renderProducts();
     this.setupEventListeners();
     this.showLoader(false);
+  }
+
+  // Vérifier si on vient de l'interface admin
+  checkAdminMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('from') === 'admin') {
+      const adminBanner = document.getElementById('admin-banner');
+      if (adminBanner) {
+        adminBanner.classList.remove('hidden');
+        // Ajouter une classe au body pour ajuster les positions sticky
+        document.body.classList.add('admin-mode');
+      }
+    }
   }
 
   // Charger le menu depuis l'API

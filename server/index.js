@@ -22,6 +22,7 @@ app.get('/admin', (req, res) => {
 
 // Routes API
 app.use('/api/menu', require('./routes/menu'));
+app.use('/api/menu-admin', require('./routes/menuAdmin')); // Gestion du menu
 app.use('/api/orders', orderLimiter, require('./routes/orders'));
 
 // Route de test

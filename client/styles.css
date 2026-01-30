@@ -12,6 +12,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Bandeau admin */
+#admin-banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
 /* Cacher la scrollbar pour les filtres */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
