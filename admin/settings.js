@@ -21,7 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // Charger le nom d'utilisateur actuel
 async function loadCurrentUsername() {
   try {
-    const response = await fetch(`${API_URL}/api/admin/current-username`);
+    const response = await fetch(`${API_URL}/api/admin/current-username`, {
+      credentials: 'include'
+    });
     if (response.ok) {
       const data = await response.json();
       currentUsernameDisplay.textContent = data.username;
@@ -132,6 +134,7 @@ async function handleSubmit(e) {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({
         currentPassword,
         newUsername,

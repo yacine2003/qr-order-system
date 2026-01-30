@@ -204,6 +204,7 @@ class MenuManager {
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ name, icon })
       });
 
@@ -248,6 +249,7 @@ class MenuManager {
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(body)
       });
 
@@ -278,7 +280,8 @@ class MenuManager {
 
     try {
       const response = await fetch(`/api/menu-admin/category/${categoryId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       });
 
       if (!response.ok) {
@@ -312,7 +315,8 @@ class MenuManager {
 
     try {
       const response = await fetch(`/api/menu-admin/product/${productId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       });
 
       if (!response.ok) {

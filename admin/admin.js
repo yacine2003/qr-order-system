@@ -17,7 +17,9 @@ class AdminApp {
   // Charger les commandes existantes
   async loadOrders() {
     try {
-      const response = await fetch('/api/orders');
+      const response = await fetch('/api/orders', {
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error('Erreur de chargement');
       this.orders = await response.json();
     } catch (error) {
@@ -237,6 +239,7 @@ class AdminApp {
       const response = await fetch(`/api/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status: newStatus })
       });
 
@@ -265,7 +268,8 @@ class AdminApp {
 
     try {
       const response = await fetch(`/api/orders/${orderId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       });
 
       if (!response.ok) throw new Error('Erreur de suppression');
