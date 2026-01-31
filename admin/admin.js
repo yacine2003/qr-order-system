@@ -153,23 +153,23 @@ class AdminApp {
     const isNew = order.status === 'nouvelle';
 
     return `
-      <div class="bg-white rounded-lg shadow-md p-4 md:p-6 ${isNew ? 'new-order border-2 border-danger' : ''} ${status.bg}">
-        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+      <div class="bg-white rounded-lg shadow-md p-3 sm:p-4 md:p-6 ${isNew ? 'new-order border-2 border-danger' : ''} ${status.bg}">
+        <div class="flex flex-col gap-3 sm:gap-4">
           
           <!-- Infos commande -->
           <div class="flex-1">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <h3 class="text-xl font-bold text-gray-800">Table ${order.table}</h3>
-                  <span class="px-3 py-1 rounded-full text-xs font-semibold bg-${status.color}/10 text-${status.color}">
+            <div class="flex flex-col sm:flex-row sm:items-start justify-between mb-3 gap-2">
+              <div class="flex-1">
+                <div class="flex items-center flex-wrap gap-2 mb-2">
+                  <h3 class="text-lg sm:text-xl font-bold text-gray-800">Table ${order.table}</h3>
+                  <span class="px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-${status.color}/10 text-${status.color}">
                     ${status.label}
                   </span>
                 </div>
-                <div class="flex items-center gap-4 text-sm text-gray-500">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500">
                   <span>👤 ${order.name}</span>
                   <span>🕐 ${order.createdAt}</span>
-                  <span class="font-mono text-xs">#${order.id}</span>
+                  <span class="font-mono text-xs hidden sm:inline">#${order.id}</span>
                 </div>
               </div>
             </div>
@@ -177,53 +177,53 @@ class AdminApp {
             <!-- Articles -->
             <div class="space-y-2 mb-3">
               ${order.items.map(item => `
-                <div class="flex justify-between text-sm">
+                <div class="flex justify-between text-xs sm:text-sm">
                   <span><span class="font-semibold">${item.quantity}x</span> ${item.name}</span>
-                  <span class="font-medium">${(item.price * item.quantity).toFixed(2)} €</span>
+                  <span class="font-medium whitespace-nowrap ml-2">${(item.price * item.quantity).toFixed(2)} €</span>
                 </div>
               `).join('')}
             </div>
 
             ${order.comment ? `
-              <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mb-3">
-                <p class="text-sm text-gray-700"><strong>💬 Commentaire:</strong> ${order.comment}</p>
+              <div class="bg-blue-50 border-l-4 border-blue-400 p-2 sm:p-3 mb-3">
+                <p class="text-xs sm:text-sm text-gray-700"><strong>💬 Commentaire:</strong> ${order.comment}</p>
               </div>
             ` : ''}
 
             <div class="flex justify-between items-center pt-3 border-t">
-              <span class="text-lg font-bold text-gray-800">Total</span>
-              <span class="text-2xl font-bold text-primary">${order.total.toFixed(2)} €</span>
+              <span class="text-base sm:text-lg font-bold text-gray-800">Total</span>
+              <span class="text-xl sm:text-2xl font-bold text-primary">${order.total.toFixed(2)} €</span>
             </div>
           </div>
 
           <!-- Actions -->
-          <div class="flex md:flex-col gap-2">
+          <div class="grid grid-cols-2 sm:flex sm:flex-row md:flex-col gap-2 pt-3 border-t sm:border-t-0 sm:pt-0">
             ${order.status !== 'servie' && order.status !== 'annulee' ? `
               ${order.status === 'nouvelle' ? `
                 <button onclick="admin.updateStatus('${order.id}', 'en_preparation')" 
-                        class="px-4 py-2 bg-warning text-white rounded-lg font-medium hover:bg-warning/90 whitespace-nowrap">
+                        class="px-3 py-2 text-sm bg-warning text-white rounded-lg font-medium hover:bg-warning/90 whitespace-nowrap">
                   👨‍🍳 Préparer
                 </button>
               ` : ''}
               ${order.status === 'en_preparation' ? `
                 <button onclick="admin.updateStatus('${order.id}', 'prete')" 
-                        class="px-4 py-2 bg-success text-white rounded-lg font-medium hover:bg-success/90 whitespace-nowrap">
+                        class="px-3 py-2 text-sm bg-success text-white rounded-lg font-medium hover:bg-success/90 whitespace-nowrap">
                   ✅ Prête
                 </button>
               ` : ''}
               ${order.status === 'prete' ? `
                 <button onclick="admin.updateStatus('${order.id}', 'servie')" 
-                        class="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 whitespace-nowrap">
+                        class="px-3 py-2 text-sm bg-primary text-white rounded-lg font-medium hover:bg-primary/90 whitespace-nowrap">
                   ✔️ Servir
                 </button>
               ` : ''}
               <button onclick="admin.updateStatus('${order.id}', 'annulee')" 
-                      class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 whitespace-nowrap">
+                      class="px-3 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 whitespace-nowrap">
                 ❌ Annuler
               </button>
             ` : ''}
             <button onclick="admin.deleteOrder('${order.id}')" 
-                    class="px-4 py-2 bg-danger/10 text-danger rounded-lg font-medium hover:bg-danger/20 whitespace-nowrap">
+                    class="px-3 py-2 text-sm bg-danger/10 text-danger rounded-lg font-medium hover:bg-danger/20 whitespace-nowrap">
               🗑️ Supprimer
             </button>
           </div>

@@ -37,26 +37,26 @@ class MenuManager {
     }
 
     container.innerHTML = this.menu.categories.map(category => `
-      <div class="bg-white rounded-lg shadow-md p-6">
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
         <!-- En-tête catégorie -->
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center space-x-3">
-            <span class="text-3xl">${category.icon || '📦'}</span>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+          <div class="flex items-center space-x-2 sm:space-x-3">
+            <span class="text-2xl sm:text-3xl">${category.icon || '📦'}</span>
             <div>
-              <h2 class="text-2xl font-bold text-gray-800">${category.name}</h2>
-              <p class="text-sm text-gray-500">${category.products.length} produit(s)</p>
+              <h2 class="text-xl sm:text-2xl font-bold text-gray-800">${category.name}</h2>
+              <p class="text-xs sm:text-sm text-gray-500">${category.products.length} produit(s)</p>
             </div>
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-2 w-full sm:w-auto">
             <button 
               onclick="menuManager.openEditCategoryModal('${category.id}')" 
-              class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
+              class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all whitespace-nowrap"
             >
               ✏️ Modifier
             </button>
             <button 
               onclick="menuManager.deleteCategory('${category.id}')" 
-              class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-all"
+              class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-sm bg-danger text-white rounded-lg hover:bg-danger/90 transition-all whitespace-nowrap"
             >
               🗑️ Supprimer
             </button>
@@ -66,32 +66,32 @@ class MenuManager {
         <!-- Bouton ajouter produit -->
         <button 
           onclick="menuManager.openAddProductModal('${category.id}')" 
-          class="mb-4 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/90 transition-all text-sm"
+          class="mb-4 w-full sm:w-auto px-4 py-2 bg-success text-white rounded-lg hover:bg-success/90 transition-all text-sm whitespace-nowrap"
         >
           + Ajouter un produit
         </button>
 
         <!-- Liste des produits -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           ${category.products.map(product => `
-            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all">
-              <div class="flex justify-between items-start mb-2">
-                <div class="flex-1">
-                  <h3 class="font-semibold text-gray-800">${product.name}</h3>
-                  <p class="text-sm text-gray-500 mt-1">${product.description || ''}</p>
+            <div class="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-all">
+              <div class="flex justify-between items-start mb-2 gap-2">
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-semibold text-gray-800 text-sm sm:text-base truncate">${product.name}</h3>
+                  <p class="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2">${product.description || ''}</p>
                 </div>
-                <span class="text-lg font-bold text-primary ml-2">${product.price.toFixed(2)} €</span>
+                <span class="text-base sm:text-lg font-bold text-primary whitespace-nowrap">${product.price.toFixed(2)} €</span>
               </div>
               <div class="flex gap-2 mt-3">
                 <button 
                   onclick="menuManager.openEditProductModal('${product.id}')" 
-                  class="flex-1 px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-all text-sm"
+                  class="flex-1 px-2 sm:px-3 py-1.5 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-all text-xs sm:text-sm whitespace-nowrap"
                 >
                   ✏️ Modifier
                 </button>
                 <button 
                   onclick="menuManager.deleteProduct('${product.id}')" 
-                  class="flex-1 px-3 py-1.5 bg-red-100 text-danger rounded hover:bg-red-200 transition-all text-sm"
+                  class="flex-1 px-2 sm:px-3 py-1.5 bg-red-100 text-danger rounded hover:bg-red-200 transition-all text-xs sm:text-sm whitespace-nowrap"
                 >
                   🗑️ Supprimer
                 </button>

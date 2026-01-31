@@ -25,47 +25,47 @@
 <body class="bg-gray-50">
   
   <!-- Header -->
-  <header class="bg-gradient-to-r from-primary to-purple-700 text-white shadow-lg">
-    <div class="container mx-auto px-4 py-6">
-      <div class="flex items-center justify-between flex-wrap gap-4">
+  <header class="bg-gradient-to-r from-primary to-purple-700 text-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 class="text-2xl md:text-3xl font-bold">⚙️ Paramètres Admin</h1>
-          <p class="text-purple-200 mt-1">Configuration et sécurité</p>
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold">⚙️ Paramètres Admin</h1>
+          <p class="text-purple-200 mt-1 text-sm sm:text-base">Configuration et sécurité</p>
         </div>
-        <div class="flex gap-3">
+        <div class="flex gap-2 sm:gap-3 w-full sm:w-auto">
           <button onclick="location.href='/admin'" 
-                  class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg font-medium transition-all">
-            ← Retour Dashboard
+                  class="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all whitespace-nowrap">
+            ← Retour
           </button>
         </div>
       </div>
     </div>
   </header>
 
-  <main class="container mx-auto px-4 py-8 max-w-4xl">
+  <main class="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-4xl">
     
 
     <!-- Carte Sécurité -->
-    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-      <div class="flex items-center mb-6">
+    <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-3">
         <div class="bg-primary/10 p-3 rounded-lg">
-          <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 sm:w-6 sm:h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
         </div>
-        <div class="ml-4">
-          <h2 class="text-xl font-bold text-gray-800">Identifiants Admin</h2>
-          <p class="text-gray-600">Modifiez votre nom d'utilisateur et mot de passe</p>
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-gray-800">Identifiants Admin</h2>
+          <p class="text-sm sm:text-base text-gray-600">Modifiez votre nom d'utilisateur et mot de passe</p>
         </div>
       </div>
 
       <!-- Identifiants actuels -->
-      <div class="bg-gray-50 p-4 rounded-lg mb-6">
-        <h3 class="font-semibold text-gray-700 mb-2">📋 Identifiants actuels</h3>
-        <div class="space-y-2 text-sm">
-          <div class="flex items-center justify-between">
+      <div class="bg-gray-50 p-3 sm:p-4 rounded-lg mb-6">
+        <h3 class="font-semibold text-gray-700 mb-2 text-sm sm:text-base">📋 Identifiants actuels</h3>
+        <div class="space-y-2 text-xs sm:text-sm">
+          <div class="flex items-center justify-between gap-2">
             <span class="text-gray-600">Nom d'utilisateur :</span>
-            <span id="current-username" class="font-mono font-semibold text-gray-800">Chargement...</span>
+            <span id="current-username" class="font-mono font-semibold text-gray-800 truncate">Chargement...</span>
           </div>
           <div class="flex items-center justify-between">
             <span class="text-gray-600">Mot de passe :</span>
@@ -193,16 +193,16 @@
 
 
         <!-- Boutons -->
-        <div class="flex gap-4 pt-4">
+        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
           <button 
             type="submit"
             id="save-btn"
-            class="flex-1 bg-primary hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+            class="w-full sm:flex-1 bg-primary hover:bg-purple-700 text-white px-4 sm:px-6 py-3 text-sm sm:text-base rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
             💾 Enregistrer les modifications
           </button>
           <button 
             type="reset"
-            class="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all">
+            class="w-full sm:w-auto px-4 sm:px-6 py-3 text-sm sm:text-base border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all">
             🔄 Réinitialiser
           </button>
         </div>
@@ -213,12 +213,12 @@
   </main>
 
   <!-- Toast de notification -->
-  <div id="toast" class="hidden fixed bottom-8 right-8 bg-gray-800 text-white px-6 py-4 rounded-lg shadow-2xl z-50 max-w-md">
+  <div id="toast" class="hidden fixed bottom-4 sm:bottom-8 right-4 sm:right-8 bg-gray-800 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-lg shadow-2xl z-50 max-w-sm sm:max-w-md">
     <div class="flex items-center">
-      <span id="toast-icon" class="text-2xl mr-3"></span>
+      <span id="toast-icon" class="text-xl sm:text-2xl mr-2 sm:mr-3"></span>
       <div>
-        <p id="toast-title" class="font-semibold"></p>
-        <p id="toast-message" class="text-sm text-gray-300"></p>
+        <p id="toast-title" class="font-semibold text-sm sm:text-base"></p>
+        <p id="toast-message" class="text-xs sm:text-sm text-gray-300"></p>
       </div>
     </div>
   </div>
