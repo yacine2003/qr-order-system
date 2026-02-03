@@ -26,7 +26,7 @@ class MenuManager {
   // Afficher le menu
   renderMenu() {
     const container = document.getElementById('menu-container');
-    
+
     if (!this.menu || !this.menu.categories || this.menu.categories.length === 0) {
       container.innerHTML = `
         <div class="text-center py-12 text-gray-400">
@@ -80,7 +80,12 @@ class MenuManager {
                   <h3 class="font-semibold text-gray-800 text-sm sm:text-base truncate">${product.name}</h3>
                   <p class="text-xs sm:text-sm text-gray-500 mt-1 line-clamp-2">${product.description || ''}</p>
                 </div>
-                <span class="text-base sm:text-lg font-bold text-primary whitespace-nowrap">${product.price.toFixed(2)} €</span>
+                ${product.image ? `
+                  <div class="ml-2 w-12 h-12 flex-shrink-0 rounded-md overflow-hidden bg-gray-100 border border-gray-200">
+                    <img src="/${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                  </div>
+                ` : ''}
+                <span class="text-base sm:text-lg font-bold text-primary whitespace-nowrap ml-2">${product.price.toFixed(2)} €</span>
               </div>
               <div class="flex gap-2 mt-3">
                 <button 
@@ -138,7 +143,12 @@ class MenuManager {
     document.getElementById('product-name').value = '';
     document.getElementById('product-price').value = '';
     document.getElementById('product-description').value = '';
-    
+
+    // Reset Image
+    document.getElementById('product-image-path').value = '';
+    document.getElementById('product-image-upload').value = '';
+    document.getElementById('product-image-preview-container').innerHTML = '<span class="text-2xl text-gray-400">📷</span>';
+
     this.fillCategorySelect(categoryId);
     document.getElementById('product-modal').classList.remove('hidden');
   }
@@ -165,7 +175,17 @@ class MenuManager {
     document.getElementById('product-name').value = product.name;
     document.getElementById('product-price').value = product.price;
     document.getElementById('product-description').value = product.description || '';
-    
+
+    // Set Image
+    document.getElementById('product-image-path').value = product.image || '';
+    document.getElementById('product-image-upload').value = ''; // Reset file input
+    const previewContainer = document.getElementById('product-image-preview-container');
+    if (product.image) {
+      previewContainer.innerHTML = `<img src="/${product.image}" class="w-full h-full object-cover">`;
+    } else {
+      previewContainer.innerHTML = '<span class="text-2xl text-gray-400">📷</span>';
+    }
+
     this.fillCategorySelect(categoryId);
     document.getElementById('product-modal').classList.remove('hidden');
   }
@@ -173,7 +193,7 @@ class MenuManager {
   // Remplir le select des catégories
   fillCategorySelect(selectedCategoryId) {
     const select = document.getElementById('product-new-category');
-    select.innerHTML = this.menu.categories.map(cat => 
+    select.innerHTML = this.menu.categories.map(cat =>
       `<option value="${cat.id}" ${cat.id === selectedCategoryId ? 'selected' : ''}>
         ${cat.icon || '📦'} ${cat.name}
       </option>`
@@ -189,13 +209,13 @@ class MenuManager {
   // Sauvegarder catégorie
   async saveCategory(e) {
     e.preventDefault();
-    
+
     const originalId = document.getElementById('category-id-original').value;
     const name = document.getElementById('category-name').value.trim();
     const icon = document.getElementById('category-icon').value.trim();
 
     const isEdit = originalId !== '';
-    const url = isEdit 
+    const url = isEdit
       ? `/api/menu-admin/category/${originalId}`
       : '/api/menu-admin/category';
     const method = isEdit ? 'PUT' : 'POST';
@@ -227,23 +247,24 @@ class MenuManager {
   // Sauvegarder produit
   async saveProduct(e) {
     e.preventDefault();
-    
+
     const originalId = document.getElementById('product-id-original').value;
     const categoryId = document.getElementById('product-category-id').value;
     const name = document.getElementById('product-name').value.trim();
     const price = parseFloat(document.getElementById('product-price').value);
     const description = document.getElementById('product-description').value.trim();
     const newCategoryId = document.getElementById('product-new-category').value;
+    const image = document.getElementById('product-image-path').value;
 
     const isEdit = originalId !== '';
-    const url = isEdit 
+    const url = isEdit
       ? `/api/menu-admin/product/${originalId}`
       : `/api/menu-admin/category/${categoryId}/product`;
     const method = isEdit ? 'PUT' : 'POST';
 
     const body = isEdit
-      ? { name, price, description, categoryId: newCategoryId }
-      : { name, price, description };
+      ? { name, price, description, categoryId: newCategoryId, image }
+      : { name, price, description, image };
 
     try {
       const response = await fetch(url, {
@@ -337,16 +358,15 @@ class MenuManager {
   showToast(message, type = 'info') {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toast-message');
-    
+
     toastMessage.textContent = message;
-    toast.className = `fixed bottom-4 right-4 shadow-xl rounded-lg p-4 z-50 max-w-sm ${
-      type === 'success' ? 'bg-success text-white' :
-      type === 'error' ? 'bg-danger text-white' :
-      'bg-white text-gray-800'
-    }`;
-    
+    toast.className = `fixed bottom-4 right-4 shadow-xl rounded-lg p-4 z-50 max-w-sm ${type === 'success' ? 'bg-success text-white' :
+        type === 'error' ? 'bg-danger text-white' :
+          'bg-white text-gray-800'
+      }`;
+
     toast.classList.remove('hidden');
-    
+
     setTimeout(() => {
       toast.classList.add('hidden');
     }, 3000);
@@ -369,6 +389,52 @@ class MenuManager {
         this.closeProductModal();
       }
     });
+
+    // Image Upload
+    document.getElementById('product-image-upload').addEventListener('change', (e) => this.handleImageUpload(e));
+  }
+
+  // Gérer l'upload d'image
+  async handleImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      this.showToast('L\'image est trop volumineuse (max 5MB)', 'error');
+      e.target.value = '';
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const previewContainer = document.getElementById('product-image-preview-container');
+    previewContainer.innerHTML = '<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>';
+
+    try {
+      const response = await fetch('/api/menu-admin/upload', {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Erreur d\'upload');
+      }
+
+      // Succès
+      document.getElementById('product-image-path').value = result.path;
+      previewContainer.innerHTML = `<img src="/${result.path}" class="w-full h-full object-cover">`;
+      this.showToast('Image téléchargée !', 'success');
+
+    } catch (error) {
+      console.error('Erreur:', error);
+      this.showToast(error.message, 'error');
+      previewContainer.innerHTML = '<span class="text-2xl text-gray-400">⚠️</span>';
+      e.target.value = ''; // Reset input
+    }
   }
 }
 

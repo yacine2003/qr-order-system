@@ -35,6 +35,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -49,6 +50,7 @@ body {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -59,9 +61,12 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -96,13 +101,50 @@ body {
 }
 
 /* Cards produits */
+/* Cards produits */
 .product-card {
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  /* Pour que l'image ne dépasse pas si on veut */
+  min-height: 160px;
+  /* Assurer une hauteur min pour l'image */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Image miniature produit */
+.product-image-container {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 100px;
+  height: 100px;
+  z-index: 1;
+}
+
+.product-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-thumbnail {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* Ajuster le conteneur des boutons pour qu'il soit au-dessus de l'image */
+.product-card>.flex.items-center.justify-between.mt-4 {
+  position: relative;
+  z-index: 10;
 }
 
 /* Badge catégorie actif */
@@ -146,6 +188,7 @@ textarea:focus {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -186,11 +229,40 @@ html {
 }
 
 /* Zone tactile minimum pour mobile */
-@media (max-width: 768px) {
+/* Zone tactile minimum pour mobile et tablettes (accessibilité) */
+@media (max-width: 1024px) {
+
   button,
   a {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    /* Standard Google/Apple (48px vs 44px) */
+    min-width: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Optimisation Tablettes & POS (800px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* Grille produit optimisée pour tablettes */
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Optimisation Kiosques (Grands écrans tactiles) */
+@media (min-width: 1280px) and (hover: none) {
+
+  /* Pour les écrans tactiles larges, on garde des boutons assez gros */
+  button {
+    min-height: 56px;
+    font-size: 1.1rem;
   }
 }
 
@@ -201,6 +273,7 @@ html {
 
 /* Print styles */
 @media print {
+
   header,
   .no-print {
     display: none;

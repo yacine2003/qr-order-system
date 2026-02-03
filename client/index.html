@@ -10,19 +10,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Configuration Tailwind personnalisée -->
+  <!-- Configuration Branding -->
+  <script src="branding.js"></script>
+
+  <!-- Configuration Tailwind dynamique -->
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#6366f1',
-            secondary: '#8b5cf6',
-            success: '#10b981',
-            danger: '#ef4444',
-            warning: '#f59e0b'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif']
+    if (window.BRANDING) {
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: window.BRANDING.colors,
+            fontFamily: {
+              sans: window.BRANDING.ui.fontFamily.split(',')
+            }
           }
         }
       }
@@ -60,10 +60,10 @@
     <div class="container mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="text-3xl">🍽️</div>
+          <div id="brand-logo" class="text-3xl"></div>
           <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Menu</h1>
-            <p class="text-xs text-gray-500">Commandez depuis votre table</p>
+            <h1 id="brand-name" class="text-xl md:text-2xl font-bold text-gray-800"></h1>
+            <p id="brand-tagline" class="text-xs text-gray-500"></p>
           </div>
         </div>
         <button id="cart-toggle" class="relative p-3 rounded-full bg-primary text-white hover:bg-primary/90 transition-all lg:hidden flex items-center justify-center">

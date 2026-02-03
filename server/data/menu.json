@@ -1,6 +1,69 @@
 {
   "categories": [
     {
+      "id": "entrees",
+      "name": "Entrées",
+      "icon": "🥗",
+      "products": [
+        {
+          "id": "salade-cesar",
+          "name": "Salade César",
+          "price": 8.5,
+          "description": "Laitue, poulet, parmesan, croûtons",
+          "image": "images/salade.png"
+        },
+        {
+          "id": "oeuf-mayo",
+          "name": "Œuf Mayonnaise",
+          "price": 5,
+          "description": "La tradition française",
+          "image": "images/salade.png"
+        }
+      ]
+    },
+    {
+      "id": "plats",
+      "name": "Plats",
+      "icon": "🍲",
+      "products": [
+        {
+          "id": "burger",
+          "name": "Burger Maison",
+          "price": 14.5,
+          "description": "Bœuf charolais, cheddar, frites maison",
+          "image": "images/burger.png"
+        },
+        {
+          "id": "bavette",
+          "name": "Bavette d'Aloyau",
+          "price": 16,
+          "description": "Sauce échalote, légumes de saison",
+          "image": "images/burger.png"
+        }
+      ]
+    },
+    {
+      "id": "desserts",
+      "name": "Desserts",
+      "icon": "🍰",
+      "products": [
+        {
+          "id": "tiramisu",
+          "name": "Tiramisu",
+          "price": 6.5,
+          "description": "Recette du chef",
+          "image": "images/tiramisu.png"
+        },
+        {
+          "id": "creme-brulee",
+          "name": "Crème Brûlée",
+          "price": 6,
+          "description": "Vanille de Madagascar",
+          "image": "images/tiramisu.png"
+        }
+      ]
+    },
+    {
       "id": "boissons",
       "name": "Boissons",
       "icon": "☕",
@@ -9,37 +72,29 @@
           "id": "cafe",
           "name": "Café",
           "price": 2.5,
-          "description": "Espresso italien"
+          "description": "Espresso italien",
+          "image": "images/cafe.png"
         },
         {
           "id": "the",
           "name": "Thé",
-          "price": 2,
-          "description": "Thé vert ou noir"
+          "price": 3,
+          "description": "Vert, Noir ou Infusion",
+          "image": "images/cafe.png"
         },
         {
-          "id": "jus",
-          "name": "Jus d'orange",
+          "id": "coca",
+          "name": "Coca-Cola",
           "price": 3.5,
-          "description": "100% pur jus"
-        },
-        {
-          "id": "biere",
-          "name": "Bière pression",
-          "price": 5,
-          "description": "33cl"
-        },
-        {
-          "id": "vin",
-          "name": "Verre de vin",
-          "price": 4.5,
-          "description": "Rouge ou blanc"
+          "description": "33cl",
+          "image": "images/cafe.png"
         },
         {
           "id": "eau",
           "name": "Eau minérale",
-          "price": 2,
-          "description": "50cl"
+          "price": 2.5,
+          "description": "50cl",
+          "image": "images/cafe.png"
         }
       ]
     },
@@ -49,22 +104,18 @@
       "icon": "🍟",
       "products": [
         {
-          "id": "chips",
-          "name": "Chips",
-          "price": 3,
-          "description": "Différents parfums"
+          "id": "frites",
+          "name": "Portion de Frites",
+          "price": 4.5,
+          "description": "Frites fraîches maison",
+          "image": "images/burger.png"
         },
         {
-          "id": "olives",
-          "name": "Olives",
-          "price": 3.5,
-          "description": "Olives marinées"
-        },
-        {
-          "id": "cacahuetes",
-          "name": "Cacahuètes",
-          "price": 2.5,
-          "description": "Salées"
+          "id": "nuggets",
+          "name": "Nuggets (x6)",
+          "price": 5.5,
+          "description": "Poulet croustillant",
+          "image": "images/burger.png"
         }
       ]
     },
@@ -74,35 +125,18 @@
       "icon": "🧀",
       "products": [
         {
-          "id": "charcuterie",
-          "name": "Planche charcuterie",
-          "price": 12,
-          "description": "Sélection de charcuterie française"
-        },
-        {
-          "id": "fromage",
-          "name": "Planche fromage",
-          "price": 11,
-          "description": "Fromages affinés"
-        },
-        {
           "id": "mixte",
-          "name": "Planche mixte",
-          "price": 14,
-          "description": "Charcuterie et fromage"
-        }
-      ]
-    },
-    {
-      "id": "desserts",
-      "name": "Desserts",
-      "icon": "📦",
-      "products": [
+          "name": "Planche Mixte",
+          "price": 15,
+          "description": "Charcuterie et fromages affinés",
+          "image": "images/planche.png"
+        },
         {
-          "id": "tiramisu",
-          "name": "Tiramisu",
-          "price": 6.5,
-          "description": "Dessert"
+          "id": "charcuterie",
+          "name": "Planche Charcuterie",
+          "price": 13.5,
+          "description": "Sélection du terroir",
+          "image": "images/planche.png"
         }
       ]
     }
