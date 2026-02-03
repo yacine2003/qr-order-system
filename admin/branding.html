@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnalisation - QR Order System</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#8b5cf6',
+            success: '#10b981',
+            danger: '#ef4444',
+            warning: '#f59e0b'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-primary to-purple-700 text-white shadow-lg sticky top-0 z-50">
+    <div class="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+        <div>
+          <h1 class="text-xl sm:text-2xl md:text-3xl font-bold">🎨 Personnalisation Visuelle</h1>
+          <p class="text-purple-200 mt-1 text-sm sm:text-base">Customisez l'apparence de votre menu</p>
+        </div>
+        <div class="flex gap-2 sm:gap-3 w-full sm:w-auto">
+          <button onclick="location.href='/admin'" class="flex-1 sm:flex-none bg-white/20 hover:bg-white/30 px-3 sm:px-4 py-2 text-sm sm:text-base rounded-lg font-medium transition-all whitespace-nowrap">
+            ← Retour
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-7xl">
+    
+    <!-- Actions rapides -->
+    <div class="flex flex-wrap gap-3 mb-6">
+      <button onclick="brandingManager.resetToDefault()" class="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg font-medium transition-all">
+        🔄 Réinitialiser
+      </button>
+      <button onclick="brandingManager.previewChanges()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-all">
+        👁️ Prévisualiser
+      </button>
+      <button id="save-btn" onclick="brandingManager.saveChanges()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-all">
+        💾 Enregistrer
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Panneau de configuration -->
+      <div class="space-y-6">
+        
+        <!-- Identité de marque -->
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-2xl mr-2">🏷️</span>
+            Identité de marque
+          </h2>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nom de l'établissement</label>
+              <input type="text" id="restaurant-name" placeholder="Mon Restaurant" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Slogan / Tagline</label>
+              <input type="text" id="restaurant-tagline" placeholder="Cuisine traditionnelle depuis 1990" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Logo (emoji ou URL)</label>
+              <input type="text" id="restaurant-logo" placeholder="🍽️" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">Emoji recommandé : 🍽️ 🍕 🍔 🥗 ☕ 🍰</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Couleurs -->
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-2xl mr-2">🎨</span>
+            Palette de couleurs
+          </h2>
+          
+          <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur principale</label>
+                <div class="flex gap-2">
+                  <input type="color" id="color-primary" value="#6366f1" class="w-16 h-12 rounded cursor-pointer">
+                  <input type="text" id="color-primary-text" value="#6366f1" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur secondaire</label>
+                <div class="flex gap-2">
+                  <input type="color" id="color-secondary" value="#8b5cf6" class="w-16 h-12 rounded cursor-pointer">
+                  <input type="text" id="color-secondary-text" value="#8b5cf6" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur accent</label>
+                <div class="flex gap-2">
+                  <input type="color" id="color-accent" value="#ec4899" class="w-16 h-12 rounded cursor-pointer">
+                  <input type="text" id="color-accent-text" value="#ec4899" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                </div>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur texte</label>
+                <div class="flex gap-2">
+                  <input type="color" id="color-text" value="#1f2937" class="w-16 h-12 rounded cursor-pointer">
+                  <input type="text" id="color-text-text" value="#1f2937" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Presets de couleurs -->
+            <div>
+              <p class="text-sm font-medium text-gray-700 mb-2">Palettes prédéfinies</p>
+              <div class="grid grid-cols-4 gap-2">
+                <button onclick="brandingManager.applyColorPreset('default')" class="h-12 rounded-lg border-2 border-gray-300 hover:border-primary transition-all" style="background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);" title="Défaut"></button>
+                <button onclick="brandingManager.applyColorPreset('ocean')" class="h-12 rounded-lg border-2 border-gray-300 hover:border-primary transition-all" style="background: linear-gradient(135deg, #0ea5e9, #06b6d4, #6366f1);" title="Océan"></button>
+                <button onclick="brandingManager.applyColorPreset('forest')" class="h-12 rounded-lg border-2 border-gray-300 hover:border-primary transition-all" style="background: linear-gradient(135deg, #10b981, #059669, #047857);" title="Forêt"></button>
+                <button onclick="brandingManager.applyColorPreset('sunset')" class="h-12 rounded-lg border-2 border-gray-300 hover:border-primary transition-all" style="background: linear-gradient(135deg, #f59e0b, #ef4444, #dc2626);" title="Coucher de soleil"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fond d'écran -->
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-2xl mr-2">🖼️</span>
+            Fond d'écran
+          </h2>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Type de fond</label>
+              <select id="bg-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary">
+                <option value="gradient">Dégradé (actuel)</option>
+                <option value="solid">Couleur unie</option>
+                <option value="image">Image</option>
+              </select>
+            </div>
+            
+            <div id="bg-gradient-options" class="space-y-3">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur 1</label>
+                <input type="color" id="bg-gradient-1" value="#f5f7fa" class="w-full h-12 rounded cursor-pointer">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur 2</label>
+                <input type="color" id="bg-gradient-2" value="#c3cfe2" class="w-full h-12 rounded cursor-pointer">
+              </div>
+            </div>
+            
+            <div id="bg-solid-options" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Couleur de fond</label>
+              <input type="color" id="bg-solid-color" value="#f9fafb" class="w-full h-12 rounded cursor-pointer">
+            </div>
+            
+            <div id="bg-image-options" class="hidden">
+              <label class="block text-sm font-medium text-gray-700 mb-2">URL de l'image</label>
+              <input type="text" id="bg-image-url" placeholder="https://..." class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+            </div>
+          </div>
+        </div>
+
+        <!-- Police de caractères -->
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-2xl mr-2">✏️</span>
+            Typographie
+          </h2>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Police principale</label>
+              <select id="font-family" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary">
+                <option value="Inter">Inter (Moderne)</option>
+                <option value="Poppins">Poppins (Arrondie)</option>
+                <option value="Roboto">Roboto (Classique)</option>
+                <option value="Playfair Display">Playfair Display (Élégante)</option>
+                <option value="Montserrat">Montserrat (Géométrique)</option>
+                <option value="Lato">Lato (Neutre)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Style des cartes -->
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-2xl mr-2">🎴</span>
+            Style des cartes produits
+          </h2>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Effet</label>
+              <select id="card-effect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary">
+                <option value="glassmorphism">Glassmorphism (effet verre)</option>
+                <option value="solid">Solide (fond blanc)</option>
+                <option value="gradient">Dégradé</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Arrondi des coins</label>
+              <input type="range" id="card-radius" min="0" max="24" value="12" class="w-full">
+              <p class="text-xs text-gray-500 mt-1">Valeur: <span id="card-radius-value">12</span>px</p>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Intensité de l'ombre</label>
+              <input type="range" id="card-shadow" min="0" max="10" value="5" class="w-full">
+              <p class="text-xs text-gray-500 mt-1">Valeur: <span id="card-shadow-value">5</span>/10</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Panneau de prévisualisation -->
+      <div class="lg:sticky lg:top-24 lg:self-start">
+        <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <span class="text-2xl mr-2">👁️</span>
+            Prévisualisation en direct
+          </h2>
+          
+          <div id="preview-container" class="border-2 border-gray-200 rounded-lg overflow-hidden" style="min-height: 600px;">
+            <!-- Preview iframe ou contenu dynamique -->
+            <div class="p-4" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+              
+              <!-- Header preview -->
+              <div class="bg-white rounded-lg shadow-md p-3 mb-4">
+                <div class="flex items-center gap-2">
+                  <span id="preview-logo" class="text-2xl">🍽️</span>
+                  <div>
+                    <h3 id="preview-name" class="font-bold text-gray-800">Mon Restaurant</h3>
+                    <p id="preview-tagline" class="text-xs text-gray-500">Commandez depuis votre table</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Filtres catégories preview -->
+              <div class="flex gap-2 mb-4 overflow-x-auto">
+                <button id="preview-cat-1" class="px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap" style="background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899); color: white;">
+                  🍽️ Tout
+                </button>
+                <button id="preview-cat-2" class="px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #374151;">
+                  🥗 Entrées
+                </button>
+                <button id="preview-cat-3" class="px-3 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap" style="background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); color: #374151;">
+                  🍔 Plats
+                </button>
+              </div>
+              
+              <!-- Carte produit preview -->
+              <div id="preview-card" class="bg-white rounded-lg shadow-md p-4">
+                <div class="flex justify-between items-start gap-3 mb-3">
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-gray-800 text-lg">Salade César</h3>
+                    <p class="text-sm text-gray-500 mt-1">Laitue, poulet, parmesan, croutons</p>
+                    <div class="mt-2">
+                      <span id="preview-price" class="text-lg font-bold" style="color: #6366f1;">8.50 €</span>
+                    </div>
+                  </div>
+                  <div class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gray-100">
+                    <div class="w-full h-full flex items-center justify-center text-3xl">🥗</div>
+                  </div>
+                </div>
+                <button id="preview-btn" class="w-full text-white px-4 py-2 rounded-lg font-medium transition-all" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
+                  Ajouter
+                </button>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p class="text-sm text-blue-800">
+              ℹ️ Les changements sont appliqués en temps réel dans la prévisualisation. Cliquez sur "Enregistrer" pour les appliquer sur le site réel.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast notification -->
+  <div id="toast" class="hidden fixed bottom-4 right-4 bg-white shadow-xl rounded-lg p-4 z-50 max-w-sm border-l-4">
+    <div class="flex items-center">
+      <span id="toast-icon" class="text-2xl mr-3"></span>
+      <div>
+        <p id="toast-title" class="font-semibold"></p>
+        <p id="toast-message" class="text-sm text-gray-600"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="branding-manager.js"></script>
+</body>
+</html>
