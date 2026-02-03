@@ -166,21 +166,20 @@ class OrderApp {
     const quantity = inCart ? inCart.quantity : 0;
 
     card.innerHTML = `
-      <div class="flex justify-between items-start mb-2 relative z-10">
-        <div class="flex-1 pr-16">
+      <div class="flex justify-between items-start gap-3 mb-3">
+        <div class="flex-1">
           <h3 class="font-semibold text-gray-800 text-lg">${product.name}</h3>
           <p class="text-sm text-gray-500 mt-1">${product.description || ''}</p>
+          <div class="mt-2">
+            <span class="text-lg font-bold text-primary">${product.price.toFixed(2)} €</span>
+          </div>
         </div>
-        <div class="text-right ml-2">
-          <span class="text-lg font-bold text-primary">${product.price.toFixed(2)} €</span>
-        </div>
+        ${product.image ? `
+          <div class="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gray-50">
+            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+          </div>
+        ` : ''}
       </div>
-      
-      ${product.image ? `
-        <div class="product-image-container mb-4">
-           <img src="${product.image}" alt="${product.name}" class="product-thumbnail">
-        </div>
-      ` : ''}
       
       <div class="flex items-center justify-between mt-4">
         ${quantity > 0 ? `

@@ -101,50 +101,17 @@ body {
 }
 
 /* Cards produits */
-/* Cards produits */
 .product-card {
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
-  /* Pour que l'image ne dépasse pas si on veut */
-  min-height: 160px;
-  /* Assurer une hauteur min pour l'image */
+  overflow: visible;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-}
-
-/* Image miniature produit */
-.product-image-container {
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  width: 100px;
-  height: 100px;
-  z-index: 1;
-}
-
-.product-thumbnail {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-  transition: transform 0.3s ease;
-}
-
-.product-card:hover .product-thumbnail {
-  transform: scale(1.1) rotate(-5deg);
-}
-
-/* Ajuster le conteneur des boutons pour qu'il soit au-dessus de l'image */
-.product-card>.flex.items-center.justify-between.mt-4 {
-  position: relative;
-  z-index: 10;
 }
 
 /* Badge catégorie actif */
