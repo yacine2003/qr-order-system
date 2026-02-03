@@ -8,6 +8,8 @@ class OrderApp {
   }
 
   async init() {
+    this.applyBranding();
+    this.checkAdminMode(); // Vérifier si on vient de l'admin
     this.showLoader(true);
     await this.loadMenu();
     this.loadCartFromStorage();
@@ -15,6 +17,48 @@ class OrderApp {
     this.renderProducts();
     this.setupEventListeners();
     this.showLoader(false);
+  }
+
+  // Appliquer la configuration de marque
+  applyBranding() {
+    if (!window.BRANDING) return;
+
+    // Titre de la page
+    document.title = `${window.BRANDING.name} - Menu`;
+    document.querySelector('meta[name="description"]').content = window.BRANDING.tagline;
+
+    // Logo
+    const logoContainer = document.getElementById('brand-logo');
+    if (window.BRANDING.logo.type === 'emoji') {
+      logoContainer.textContent = window.BRANDING.logo.value;
+    } else {
+      logoContainer.innerHTML = `<img src="${window.BRANDING.logo.value}" alt="${window.BRANDING.logo.alt}" class="h-10 w-auto">`;
+    }
+
+    // Nom et Tagline
+    document.getElementById('brand-name').textContent = window.BRANDING.name;
+    document.getElementById('brand-tagline').textContent = window.BRANDING.tagline;
+
+    // Background Image (si configurée)
+    if (window.BRANDING.backgroundImage) {
+      document.body.style.backgroundImage = `url('${window.BRANDING.backgroundImage}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundAttachment = 'fixed';
+    }
+  }
+
+  // Vérifier si on vient de l'interface admin
+  checkAdminMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('from') === 'admin') {
+      const adminBanner = document.getElementById('admin-banner');
+      if (adminBanner) {
+        adminBanner.classList.remove('hidden');
+        // Ajouter une classe au body pour ajuster les positions sticky
+        document.body.classList.add('admin-mode');
+      }
+    }
   }
 
   // Charger le menu depuis l'API
@@ -42,10 +86,10 @@ class OrderApp {
   // Afficher les catégories
   renderCategories() {
     const container = document.getElementById('categories-filter');
-    
+
     // Vider le conteneur avant d'ajouter les boutons
     container.innerHTML = '';
-    
+
     // Bouton "Tout"
     const allBtn = this.createCategoryButton('all', 'Tout', '🍽️');
     container.appendChild(allBtn);
@@ -60,12 +104,11 @@ class OrderApp {
   // Créer un bouton catégorie
   createCategoryButton(id, name, icon) {
     const btn = document.createElement('button');
-    btn.className = `px-3 py-1.5 md:px-4 md:py-2 rounded-full text-sm md:text-base font-medium whitespace-nowrap transition-all ${
-      this.selectedCategory === id 
-        ? 'category-badge-active' 
-        : 'bg-white text-gray-700 hover:bg-gray-100'
-    }`;
-    btn.innerHTML = `${icon} ${name}`;
+    btn.className = `px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex-shrink-0 ${this.selectedCategory === id
+      ? 'category-badge-active'
+      : 'bg-white text-gray-700 hover:bg-gray-100'
+      }`;
+    btn.innerHTML = `<span class="inline-flex items-center gap-1.5">${icon} <span>${name}</span></span>`;
     btn.addEventListener('click', () => this.filterByCategory(id));
     return btn;
   }
@@ -75,7 +118,7 @@ class OrderApp {
     this.selectedCategory = categoryId;
     this.renderCategories();
     this.renderProducts();
-    
+
     // Scroll vers le haut des produits
     document.getElementById('products-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -85,8 +128,8 @@ class OrderApp {
     const container = document.getElementById('products-container');
     container.innerHTML = '';
 
-    const categories = this.selectedCategory === 'all' 
-      ? this.menu.categories 
+    const categories = this.selectedCategory === 'all'
+      ? this.menu.categories
       : this.menu.categories.filter(cat => cat.id === this.selectedCategory);
 
     categories.forEach(category => {
@@ -118,19 +161,24 @@ class OrderApp {
   createProductCard(product) {
     const card = document.createElement('div');
     card.className = 'product-card bg-white rounded-lg shadow-md p-4 fade-in';
-    
+
     const inCart = this.cart.find(item => item.id === product.id);
     const quantity = inCart ? inCart.quantity : 0;
 
     card.innerHTML = `
-      <div class="flex justify-between items-start mb-2">
+      <div class="flex justify-between items-start gap-3 mb-3">
         <div class="flex-1">
           <h3 class="font-semibold text-gray-800 text-lg">${product.name}</h3>
           <p class="text-sm text-gray-500 mt-1">${product.description || ''}</p>
+          <div class="mt-2">
+            <span class="text-lg font-bold text-primary">${product.price.toFixed(2)} €</span>
+          </div>
         </div>
-        <div class="text-right ml-2">
-          <span class="text-lg font-bold text-primary">${product.price.toFixed(2)} €</span>
-        </div>
+        ${product.image ? `
+          <div class="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gray-50">
+            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+          </div>
+        ` : ''}
       </div>
       
       <div class="flex items-center justify-between mt-4">
@@ -164,7 +212,7 @@ class OrderApp {
     if (!product) return;
 
     const existingItem = this.cart.find(item => item.id === productId);
-    
+
     if (existingItem) {
       existingItem.quantity++;
     } else {
@@ -216,7 +264,7 @@ class OrderApp {
   updateCartBadge() {
     const badge = document.getElementById('cart-badge');
     const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-    
+
     if (totalItems > 0) {
       badge.textContent = totalItems;
       badge.classList.remove('hidden');
@@ -438,7 +486,7 @@ class OrderApp {
   toggleCartModal() {
     const modal = document.getElementById('cart-modal');
     const content = document.getElementById('cart-modal-content');
-    
+
     if (modal.classList.contains('hidden')) {
       modal.classList.remove('hidden');
       setTimeout(() => {

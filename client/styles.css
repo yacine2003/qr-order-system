@@ -12,6 +12,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Bandeau admin */
+#admin-banner {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
 /* Cacher la scrollbar pour les filtres */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -28,6 +35,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -42,6 +50,7 @@ body {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -52,9 +61,12 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -91,6 +103,10 @@ body {
 /* Cards produits */
 .product-card {
   transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
@@ -100,9 +116,14 @@ body {
 
 /* Badge catégorie actif */
 .category-badge-active {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+  color: white !important;
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  font-weight: 600;
+}
+
+.category-badge-active span {
+  color: white !important;
 }
 
 /* Effet glassmorphism (optionnel) */
@@ -134,6 +155,7 @@ textarea:focus {
   0% {
     background-position: 200% 0;
   }
+
   100% {
     background-position: -200% 0;
   }
@@ -174,11 +196,40 @@ html {
 }
 
 /* Zone tactile minimum pour mobile */
-@media (max-width: 768px) {
+/* Zone tactile minimum pour mobile et tablettes (accessibilité) */
+@media (max-width: 1024px) {
+
   button,
   a {
-    min-height: 44px;
-    min-width: 44px;
+    min-height: 48px;
+    /* Standard Google/Apple (48px vs 44px) */
+    min-width: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Optimisation Tablettes & POS (800px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* Grille produit optimisée pour tablettes */
+  .grid-cols-1 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Optimisation Kiosques (Grands écrans tactiles) */
+@media (min-width: 1280px) and (hover: none) {
+
+  /* Pour les écrans tactiles larges, on garde des boutons assez gros */
+  button {
+    min-height: 56px;
+    font-size: 1.1rem;
   }
 }
 
@@ -189,6 +240,7 @@ html {
 
 /* Print styles */
 @media print {
+
   header,
   .no-print {
     display: none;

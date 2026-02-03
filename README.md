@@ -34,8 +34,11 @@ Système **complet, moderne et professionnel** de commande via QR code pour bar/
 - ✅ Gestion des statuts (nouvelle → préparation → prête → servie)
 - ✅ Filtres et recherche
 - ✅ Nettoyage automatique
+- ✅ **Gestion des identifiants** (modification sans code)
 
 ### 🔒 Sécurité
+- ✅ **Authentification admin** (HTTP Basic Auth)
+- ✅ **Interface de gestion des identifiants**
 - ✅ Validation côté serveur
 - ✅ Rate limiting
 - ✅ Protection injection
@@ -55,6 +58,7 @@ npm start
 # 3. Ouvrir dans le navigateur
 # Client : http://localhost:3000
 # Admin  : http://localhost:3000/admin
+#          (login: admin / mot de passe: admin123)
 ```
 
 **⚡ C'est tout ! Le système est prêt !**
@@ -71,6 +75,7 @@ npm start
 |----------|-------------|------------|
 | **[QUICKSTART.md](QUICKSTART.md)** | Démarrage en 2 minutes | 🟢 Débutant |
 | **[GUIDE_UTILISATEUR.md](GUIDE_UTILISATEUR.md)** | Guide complet d'utilisation | 👤 Utilisateur |
+| **[AUTHENTICATION.md](AUTHENTICATION.md)** | Sécurité et authentification | 🔒 Sécurité |
 | **[DEPLOYMENT.md](DEPLOYMENT.md)** | Mise en production | 🚀 Déploiement |
 | **[COMMANDES.md](COMMANDES.md)** | Aide-mémoire commandes | 💻 Développeur |
 | **[OVERVIEW.md](OVERVIEW.md)** | Vue d'ensemble technique | 🔍 Architecture |
@@ -80,6 +85,8 @@ npm start
 
 - **Démarrer rapidement** → [`QUICKSTART.md`](QUICKSTART.md)
 - **Utiliser au quotidien** → [`GUIDE_UTILISATEUR.md`](GUIDE_UTILISATEUR.md)
+- **Configurer la sécurité** → [`AUTHENTICATION.md`](AUTHENTICATION.md)
+- **Modifier les identifiants** → [`FEATURE_SETTINGS.md`](FEATURE_SETTINGS.md)
 - **Déployer en ligne** → [`DEPLOYMENT.md`](DEPLOYMENT.md)
 - **Modifier le menu** → [`server/data/menu.json`](server/data/menu.json)
 - **Créer QR codes** → [`qr-codes/README.md`](qr-codes/README.md)

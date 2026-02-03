@@ -48,107 +48,113 @@
 <body class="bg-gray-50">
   
   <!-- Header -->
-  <header class="bg-white shadow-sm">
-    <div class="container mx-auto px-4 py-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <div class="text-3xl">👨‍💼</div>
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <div class="text-2xl sm:text-3xl">👨‍💼</div>
           <div>
-            <h1 class="text-2xl font-bold text-gray-800">Administration</h1>
-            <p class="text-sm text-gray-500">Gestion des commandes</p>
+            <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">Administration</h1>
+            <p class="text-xs sm:text-sm text-gray-500">Gestion des commandes</p>
           </div>
         </div>
-        <div class="flex items-center space-x-4">
-          <div id="connection-status" class="flex items-center space-x-2">
+        <div class="flex items-center flex-wrap gap-2 w-full sm:w-auto">
+          <div id="connection-status" class="flex items-center space-x-2 text-xs sm:text-sm">
             <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
-            <span class="text-sm text-gray-600">Déconnecté</span>
+            <span class="text-gray-600">● Connecté</span>
           </div>
-          <button onclick="location.href='/'" class="text-primary hover:text-primary/80 font-medium">
-            Voir le menu
+          <button onclick="location.href='/admin/menu-manager.html'" class="bg-primary text-white px-3 py-2 text-sm sm:px-4 rounded-lg hover:bg-primary/90 font-medium transition-all whitespace-nowrap">
+            📋 Gérer le menu
           </button>
+          <button onclick="location.href='/admin/settings.html'" class="bg-gray-700 text-white px-3 py-2 text-sm sm:px-4 rounded-lg hover:bg-gray-800 font-medium transition-all whitespace-nowrap">
+            ⚙️ Paramètres
+          </button>
+          <a href="/?from=admin" target="_blank" class="text-primary hover:text-primary/80 font-medium inline-flex items-center text-sm whitespace-nowrap">
+            👁️ Voir le menu
+          </a>
         </div>
       </div>
     </div>
   </header>
 
   <!-- Statistiques -->
-  <section class="container mx-auto px-4 py-6">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      <div class="bg-white rounded-lg shadow p-4">
+  <section class="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div class="bg-white rounded-lg shadow p-3 sm:p-4">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm text-gray-500">Nouvelles</p>
-            <p class="text-2xl font-bold text-danger" id="stat-new">0</p>
+            <p class="text-xs sm:text-sm text-gray-500">Nouvelles</p>
+            <p class="text-xl sm:text-2xl font-bold text-danger" id="stat-new">0</p>
           </div>
-          <div class="text-3xl">🔔</div>
+          <div class="text-2xl sm:text-3xl">🔔</div>
         </div>
       </div>
       
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="bg-white rounded-lg shadow p-3 sm:p-4">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm text-gray-500">En préparation</p>
-            <p class="text-2xl font-bold text-warning" id="stat-preparing">0</p>
+            <p class="text-xs sm:text-sm text-gray-500">En préparation</p>
+            <p class="text-xl sm:text-2xl font-bold text-warning" id="stat-preparing">0</p>
           </div>
-          <div class="text-3xl">👨‍🍳</div>
+          <div class="text-2xl sm:text-3xl">👨‍🍳</div>
         </div>
       </div>
       
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="bg-white rounded-lg shadow p-3 sm:p-4">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm text-gray-500">Prêtes</p>
-            <p class="text-2xl font-bold text-success" id="stat-ready">0</p>
+            <p class="text-xs sm:text-sm text-gray-500">Prêtes</p>
+            <p class="text-xl sm:text-2xl font-bold text-success" id="stat-ready">0</p>
           </div>
-          <div class="text-3xl">✅</div>
+          <div class="text-2xl sm:text-3xl">✅</div>
         </div>
       </div>
       
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="bg-white rounded-lg shadow p-3 sm:p-4">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-sm text-gray-500">Total aujourd'hui</p>
-            <p class="text-2xl font-bold text-primary" id="stat-total">0.00 €</p>
+            <p class="text-xs sm:text-sm text-gray-500 whitespace-nowrap">Total aujourd'hui</p>
+            <p class="text-xl sm:text-2xl font-bold text-primary" id="stat-total">0.00 €</p>
           </div>
-          <div class="text-3xl">💰</div>
+          <div class="text-2xl sm:text-3xl">💰</div>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Filtres -->
-  <section class="container mx-auto px-4 pb-4">
-    <div class="bg-white rounded-lg shadow p-4">
-      <div class="flex flex-wrap items-center gap-2">
-        <button onclick="admin.filterOrders('all')" class="filter-btn px-4 py-2 rounded-lg font-medium bg-primary text-white" data-filter="all">
-          Toutes
-        </button>
-        <button onclick="admin.filterOrders('nouvelle')" class="filter-btn px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300" data-filter="nouvelle">
-          🔔 Nouvelles
-        </button>
-        <button onclick="admin.filterOrders('en_preparation')" class="filter-btn px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300" data-filter="en_preparation">
-          👨‍🍳 En préparation
-        </button>
-        <button onclick="admin.filterOrders('prete')" class="filter-btn px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300" data-filter="prete">
-          ✅ Prêtes
-        </button>
-        <button onclick="admin.filterOrders('servie')" class="filter-btn px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300" data-filter="servie">
-          ✔️ Servies
-        </button>
-        <div class="ml-auto">
-          <button onclick="admin.clearOldOrders()" class="px-4 py-2 rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300">
-            🗑️ Nettoyer
+  <section class="container mx-auto px-3 sm:px-4 pb-4">
+    <div class="bg-white rounded-lg shadow p-3 sm:p-4">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+        <div class="flex flex-wrap gap-2 flex-1">
+          <button onclick="admin.filterOrders('all')" class="filter-btn px-3 py-2 text-sm rounded-lg font-medium bg-primary text-white whitespace-nowrap" data-filter="all">
+            Toutes
+          </button>
+          <button onclick="admin.filterOrders('nouvelle')" class="filter-btn px-3 py-2 text-sm rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 whitespace-nowrap" data-filter="nouvelle">
+            🔔 Nouvelles
+          </button>
+          <button onclick="admin.filterOrders('en_preparation')" class="filter-btn px-3 py-2 text-sm rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 whitespace-nowrap" data-filter="en_preparation">
+            👨‍🍳 En prép.
+          </button>
+          <button onclick="admin.filterOrders('prete')" class="filter-btn px-3 py-2 text-sm rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 whitespace-nowrap" data-filter="prete">
+            ✅ Prêtes
+          </button>
+          <button onclick="admin.filterOrders('servie')" class="filter-btn px-3 py-2 text-sm rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 whitespace-nowrap" data-filter="servie">
+            ✔️ Servies
           </button>
         </div>
+        <button onclick="admin.clearOldOrders()" class="px-3 py-2 text-sm rounded-lg font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 whitespace-nowrap w-full sm:w-auto">
+          🗑️ Nettoyer
+        </button>
       </div>
     </div>
   </section>
 
   <!-- Liste des commandes -->
-  <section class="container mx-auto px-4 pb-8">
-    <div id="orders-container" class="space-y-4">
+  <section class="container mx-auto px-3 sm:px-4 pb-8">
+    <div id="orders-container" class="space-y-3 sm:space-y-4">
       <div class="text-center py-12 text-gray-400">
-        <p class="text-lg">Aucune commande pour le moment</p>
+        <p class="text-base sm:text-lg">Aucune commande pour le moment</p>
       </div>
     </div>
   </section>

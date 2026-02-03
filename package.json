@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Système de commande via QR code pour bar/restauration",
   "main": "server/index.js",
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
@@ -10,13 +14,20 @@
     "clear-orders": "node scripts/clear-orders.js",
     "backup": "node scripts/backup.js"
   },
-  "keywords": ["qr-code", "order", "restaurant", "bar"],
+  "keywords": [
+    "qr-code",
+    "order",
+    "restaurant",
+    "bar"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "express-rate-limit": "^7.1.5"
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

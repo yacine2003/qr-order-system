@@ -10,19 +10,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Configuration Tailwind personnalisée -->
+  <!-- Configuration Branding -->
+  <script src="branding.js"></script>
+
+  <!-- Configuration Tailwind dynamique -->
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#6366f1',
-            secondary: '#8b5cf6',
-            success: '#10b981',
-            danger: '#ef4444',
-            warning: '#f59e0b'
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif']
+    if (window.BRANDING) {
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: window.BRANDING.colors,
+            fontFamily: {
+              sans: window.BRANDING.ui.fontFamily.split(',')
+            }
           }
         }
       }
@@ -38,15 +38,32 @@
 </head>
 <body class="bg-gray-50 font-sans">
   
+  <!-- Bandeau Admin (caché par défaut) -->
+  <div id="admin-banner" class="hidden bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-md">
+    <div class="container mx-auto px-3 md:px-4 py-2 md:py-3">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div class="flex items-center space-x-2">
+          <span class="text-base md:text-lg">🔒</span>
+          <span class="font-medium text-sm md:text-base">Mode Admin</span>
+        </div>
+        <div class="flex items-center space-x-2 md:space-x-4 text-sm md:text-base">
+          <button onclick="window.close()" class="text-white hover:text-gray-300 font-medium transition-all inline-flex items-center whitespace-nowrap bg-transparent border-0 cursor-pointer px-3 py-1 rounded hover:bg-white/10">
+            ← Fermer et retourner
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- Header -->
   <header class="bg-white shadow-sm sticky top-0 z-40">
     <div class="container mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="text-3xl">🍽️</div>
+          <div id="brand-logo" class="text-3xl"></div>
           <div>
-            <h1 class="text-xl md:text-2xl font-bold text-gray-800">Menu</h1>
-            <p class="text-xs text-gray-500">Commandez depuis votre table</p>
+            <h1 id="brand-name" class="text-xl md:text-2xl font-bold text-gray-800"></h1>
+            <p id="brand-tagline" class="text-xs text-gray-500"></p>
           </div>
         </div>
         <button id="cart-toggle" class="relative p-3 rounded-full bg-primary text-white hover:bg-primary/90 transition-all lg:hidden flex items-center justify-center">
@@ -62,7 +79,7 @@
   <!-- Filtres catégories -->
   <div class="bg-white border-b sticky top-[72px] md:top-[80px] z-30">
     <div class="container mx-auto px-3 md:px-4">
-      <div id="categories-filter" class="flex overflow-x-auto space-x-2 py-3 no-scrollbar">
+      <div id="categories-filter" class="flex overflow-x-auto gap-2 py-3 no-scrollbar pb-safe">
         <!-- Dynamiquement rempli -->
       </div>
     </div>
