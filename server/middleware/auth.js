@@ -39,6 +39,39 @@ function requireAuth(req, res, next) {
 }
 
 /**
+ * Middleware d'authentification SUPERADMIN
+ * Protège les routes de personnalisation (branding)
+ * Accès réservé aux développeurs uniquement
+ */
+function requireSuperAdmin(req, res, next) {
+  const auth = req.headers.authorization;
+
+  // Vérifier si header Authorization existe
+  if (!auth || !auth.startsWith('Basic ')) {
+    return sendSuperAdminAuthRequired(res);
+  }
+
+  try {
+    // Décoder les identifiants (format: "Basic base64(username:password)")
+    const credentials = Buffer.from(auth.split(' ')[1], 'base64').toString();
+    const [username, password] = credentials.split(':');
+
+    // Vérifier les identifiants SUPERADMIN
+    if (username === config.SUPERADMIN_AUTH.username && 
+        password === config.SUPERADMIN_AUTH.password) {
+      return next(); // ✅ Authentification superadmin réussie
+    }
+
+    // ❌ Identifiants invalides
+    return sendSuperAdminAuthRequired(res, 'Identifiants superadmin incorrects');
+
+  } catch (error) {
+    console.error('Erreur authentification superadmin:', error);
+    return sendSuperAdminAuthRequired(res);
+  }
+}
+
+/**
  * Envoie une réponse 401 avec demande d'authentification
  */
 function sendAuthRequired(res, message = 'Authentification requise') {
@@ -49,4 +82,15 @@ function sendAuthRequired(res, message = 'Authentification requise') {
   });
 }
 
-module.exports = { requireAuth };
+/**
+ * Envoie une réponse 401 avec demande d'authentification SUPERADMIN
+ */
+function sendSuperAdminAuthRequired(res, message = 'Authentification superadmin requise') {
+  res.setHeader('WWW-Authenticate', 'Basic realm="Superadmin - Personnalisation"');
+  res.status(401).json({ 
+    error: message,
+    hint: '🔒 Accès réservé aux développeurs uniquement. Utilisez les identifiants SUPERADMIN.'
+  });
+}
+
+module.exports = { requireAuth, requireSuperAdmin };

@@ -30,5 +30,11 @@ module.exports = {
     enabled: process.env.ADMIN_AUTH_ENABLED !== 'false', // true par défaut
     username: process.env.ADMIN_USERNAME || 'admin',
     password: process.env.ADMIN_PASSWORD || 'admin123'
+  },
+
+  // Authentification Superadmin (développeurs uniquement)
+  SUPERADMIN_AUTH: {
+    username: process.env.SUPERADMIN_USERNAME || 'superadmin',
+    password: process.env.SUPERADMIN_PASSWORD || 'dev123'
   }
 };

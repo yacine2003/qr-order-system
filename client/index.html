@@ -9,20 +9,15 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Configuration Tailwind personnalisée -->
-  <!-- Configuration Branding -->
-  <script src="branding.js"></script>
-
-  <!-- Configuration Tailwind dynamique -->
+  <!-- Configuration Tailwind par défaut -->
   <script>
-    if (window.BRANDING) {
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: window.BRANDING.colors,
-            fontFamily: {
-              sans: window.BRANDING.ui.fontFamily.split(',')
-            }
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            secondary: '#8b5cf6',
+            accent: '#ec4899'
           }
         }
       }
@@ -271,5 +266,6 @@
 
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="branding.js"></script>
 </body>
 </html>

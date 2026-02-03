@@ -1,0 +1,28 @@
+{
+  "restaurant": {
+    "name": "Menu",
+    "tagline": "Commandez depuis votre table",
+    "logo": "🍽️"
+  },
+  "colors": {
+    "primary": "#10b981",
+    "secondary": "#059669",
+    "accent": "#047857",
+    "text": "#1f2937"
+  },
+  "background": {
+    "type": "gradient",
+    "gradient1": "#f5f7fa",
+    "gradient2": "#c3cfe2",
+    "solid": "#f9fafb",
+    "imageUrl": ""
+  },
+  "typography": {
+    "fontFamily": "Inter"
+  },
+  "cards": {
+    "effect": "glassmorphism",
+    "borderRadius": 12,
+    "shadowIntensity": 5
+  }
+}

@@ -6,7 +6,7 @@ const cors = require('cors');
 const path = require('path');
 const config = require('./config');
 const { orderLimiter } = require('./middleware/rateLimiter');
-const { requireAuth } = require('./middleware/auth');
+const { requireAuth, requireSuperAdmin } = require('./middleware/auth');
 
 const app = express();
 
@@ -18,7 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 // Servir les fichiers statiques (client public)
 app.use(express.static(path.join(__dirname, '../client')));
 
-// 🔒 PROTECTION ADMIN : Toutes les routes /admin nécessitent une authentification
+// 🔒 PROTECTION SUPERADMIN : Route de personnalisation (développeurs uniquement)
+app.get('/admin/branding.html', requireSuperAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, '../admin/branding.html'));
+});
+
+// 🔒 PROTECTION ADMIN : Toutes les autres routes /admin nécessitent une authentification
 app.use('/admin', requireAuth, express.static(path.join(__dirname, '../admin')));
 
 // Route spécifique pour /admin (redirection vers dashboard.html)
@@ -33,6 +38,9 @@ app.use('/api/orders', orderLimiter, require('./routes/orders'));
 // 🔒 Routes API protégées (admin uniquement)
 app.use('/api/menu-admin', requireAuth, require('./routes/menuAdmin'));
 app.use('/api/admin', requireAuth, require('./routes/adminSettings'));
+
+// 🔒 Route API protégée SUPERADMIN (personnalisation)
+app.use('/api/branding', requireSuperAdmin, require('./routes/branding'));
 
 // Route de test
 app.get('/api/health', (req, res) => {
@@ -78,6 +86,9 @@ app.listen(PORT, () => {
 ╠════════════════════════════════════════╣
 ║   ${authStatus.padEnd(38)} ║
 ${authInfo}
+╠════════════════════════════════════════╣
+║   🔐 Superadmin: ${config.SUPERADMIN_AUTH.username.padEnd(21)} ║
+║   🎨 Branding: /admin/branding.html    ║
 ╚════════════════════════════════════════╝
   `);
   
