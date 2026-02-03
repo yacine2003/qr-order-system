@@ -106,8 +106,8 @@ class OrderApp {
     const btn = document.createElement('button');
     btn.className = `px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex-shrink-0 ${this.selectedCategory === id
       ? 'category-badge-active'
-      : 'bg-white text-gray-700 hover:bg-gray-100'
-      }`;
+      : 'category-badge-inactive'
+    }`;
     btn.innerHTML = `<span class="inline-flex items-center gap-1.5">${icon} <span>${name}</span></span>`;
     btn.addEventListener('click', () => this.filterByCategory(id));
     return btn;
