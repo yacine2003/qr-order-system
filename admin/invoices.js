@@ -58,10 +58,18 @@ async function loadInvoices() {
                     ${invoice.itemsCount}
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <button onclick="downloadInvoice('${invoice.id}')" 
-                            class="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium transition-all shadow-sm">
-                        <span>📄</span> PDF
-                    </button>
+                    <div class="flex items-center justify-end gap-2">
+                        <button onclick="downloadInvoice('${invoice.id}', true)" 
+                                title="Facture détaillée"
+                                class="inline-flex items-center gap-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-2 py-1.5 rounded text-xs font-medium transition-all shadow-sm">
+                            <span>📝</span> Détail
+                        </button>
+                        <button onclick="downloadInvoice('${invoice.id}', false)" 
+                                title="Ticket global"
+                                class="inline-flex items-center gap-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-2 py-1.5 rounded text-xs font-medium transition-all shadow-sm">
+                            <span>💶</span> Total
+                        </button>
+                    </div>
                 </td>
             </tr>
         `).join('');
@@ -78,6 +86,7 @@ async function loadInvoices() {
     }
 }
 
-function downloadInvoice(orderId) {
-    window.open(`/api/bi/export/invoice/${orderId}`, '_blank');
+function downloadInvoice(orderId, detailed = true) {
+    const mode = detailed ? 'detailed' : 'simple';
+    window.open(`/api/bi/export/invoice/${orderId}?mode=${mode}`, '_blank');
 }

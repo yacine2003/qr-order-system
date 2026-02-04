@@ -14,7 +14,7 @@ const RESTAURANT_INFO = {
 };
 
 const pdfGenerator = {
-    generateInvoice: async (order, res) => {
+    generateInvoice: async (order, res, detailed = true) => {
         const doc = new PDFDocument({ margin: 50 });
 
         // Stream le PDF directement dans la réponse HTTP
@@ -76,7 +76,7 @@ const pdfGenerator = {
         // Rows
         let position = tableHeaderY + 30;
 
-        if (order.items && order.items.length > 0) {
+        if (detailed && order.items && order.items.length > 0) {
             order.items.forEach(item => {
                 const totalLine = item.price * item.quantity;
 
@@ -94,6 +94,13 @@ const pdfGenerator = {
 
                 position += 20;
             });
+        } else if (!detailed) {
+            // Mode simplifié : juste une ligne globale
+            doc.text("FORFAIT REPAS / COMMANDE", 50, position)
+                .text("1", 300, position, { width: 90, align: "right" })
+                .text(order.total.toFixed(2) + " €", 400, position, { width: 90, align: "right" })
+                .text(order.total.toFixed(2) + " €", 500, position, { width: 40, align: "right" });
+            position += 20;
         }
 
         // --- TOTAUX ---

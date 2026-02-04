@@ -110,6 +110,9 @@ router.get('/invoices', (req, res) => {
 router.get('/export/invoice/:orderId', async (req, res) => {
     try {
         const { orderId } = req.params;
+        const { mode } = req.query; // 'simple' ou undefined (défaut detailed)
+        const detailed = mode !== 'simple';
+
         const orders = getOrders();
         // Recherche flexible (numérique ou string)
         const order = orders.find(o => o.id == orderId); // == pour cast auto
@@ -121,7 +124,7 @@ router.get('/export/invoice/:orderId', async (req, res) => {
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `inline; filename=facture_${orderId}.pdf`);
 
-        await pdfGenerator.generateInvoice(order, res);
+        await pdfGenerator.generateInvoice(order, res, detailed);
 
     } catch (error) {
         console.error("Erreur génération PDF", error);
