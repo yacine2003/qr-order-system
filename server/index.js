@@ -36,16 +36,18 @@ app.use('/api/menu', require('./routes/menu'));
 app.use('/api/orders', orderLimiter, require('./routes/orders'));
 
 // 🔒 Routes API protégées (admin uniquement)
+// 🔒 Routes API protégées (admin uniquement)
 app.use('/api/menu-admin', requireAuth, require('./routes/menuAdmin'));
 app.use('/api/admin', requireAuth, require('./routes/adminSettings'));
+app.use('/api/bi', requireAuth, require('./routes/bi'));
 
-// 🔒 Route API protégée SUPERADMIN (personnalisation)
-app.use('/api/branding', requireSuperAdmin, require('./routes/branding'));
+// Route API Branding (GET public, POST SuperAdmin géré dans le routeur)
+app.use('/api/branding', require('./routes/branding'));
 
 // Route de test
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
@@ -65,10 +67,10 @@ app.use((err, req, res, next) => {
 // Démarrage du serveur
 const PORT = config.PORT;
 app.listen(PORT, () => {
-  const authStatus = config.ADMIN_AUTH.enabled 
-    ? '🔒 Authentification ACTIVÉE' 
+  const authStatus = config.ADMIN_AUTH.enabled
+    ? '🔒 Authentification ACTIVÉE'
     : '⚠️  Authentification DÉSACTIVÉE';
-  
+
   const authInfo = config.ADMIN_AUTH.enabled
     ? `║   👤 Login: ${config.ADMIN_AUTH.username.padEnd(28)} ║`
     : '║   ⚠️  ATTENTION: Admin non protégé !   ║';
@@ -91,7 +93,7 @@ ${authInfo}
 ║   🎨 Branding: /admin/branding.html    ║
 ╚════════════════════════════════════════╝
   `);
-  
+
   if (!config.ADMIN_AUTH.enabled) {
     console.warn('\n⚠️  AVERTISSEMENT SÉCURITÉ : Authentification admin désactivée !');
     console.warn('   Activez-la avec ADMIN_AUTH_ENABLED=true dans .env\n');

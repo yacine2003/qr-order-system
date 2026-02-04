@@ -106,7 +106,7 @@ class AdminApp {
   // Filtrer les commandes
   filterOrders(status) {
     this.currentFilter = status;
-    
+
     // Mettre à jour les boutons
     document.querySelectorAll('.filter-btn').forEach(btn => {
       if (btn.dataset.filter === status) {
@@ -122,9 +122,9 @@ class AdminApp {
   // Afficher les commandes
   renderOrders() {
     const container = document.getElementById('orders-container');
-    
-    const filteredOrders = this.currentFilter === 'all' 
-      ? this.orders 
+
+    const filteredOrders = this.currentFilter === 'all'
+      ? this.orders
       : this.orders.filter(o => o.status === this.currentFilter);
 
     if (filteredOrders.length === 0) {
@@ -198,6 +198,10 @@ class AdminApp {
 
           <!-- Actions -->
           <div class="grid grid-cols-2 sm:flex sm:flex-row md:flex-col gap-2 pt-3 border-t sm:border-t-0 sm:pt-0">
+             <button onclick="admin.downloadInvoice('${order.id}')"
+                    class="px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 whitespace-nowrap mb-2">
+              📄 Facture
+            </button>     
             ${order.status !== 'servie' && order.status !== 'annulee' ? `
               ${order.status === 'nouvelle' ? `
                 <button onclick="admin.updateStatus('${order.id}', 'en_preparation')" 
@@ -246,7 +250,7 @@ class AdminApp {
       if (!response.ok) throw new Error('Erreur de mise à jour');
 
       const result = await response.json();
-      
+
       // Mettre à jour localement
       const orderIndex = this.orders.findIndex(o => o.id === orderId);
       if (orderIndex !== -1) {
@@ -276,7 +280,7 @@ class AdminApp {
 
       // Retirer localement
       this.orders = this.orders.filter(o => o.id !== orderId);
-      
+
       this.updateStats();
       this.renderOrders();
 
@@ -295,6 +299,21 @@ class AdminApp {
     for (const order of toDelete) {
       await this.deleteOrder(order.id);
     }
+  }
+
+  // Export CSV Détail
+  exportCsvDetailed() {
+    window.location.href = '/api/bi/export/csv/detailed';
+  }
+
+  // Export CSV Jour
+  exportCsvDaily() {
+    window.location.href = '/api/bi/export/csv/summary';
+  }
+
+  // Télécharger Facture
+  downloadInvoice(orderId) {
+    window.open(`/api/bi/export/invoice/${orderId}`, '_blank');
   }
 }
 
