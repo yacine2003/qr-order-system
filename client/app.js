@@ -4,12 +4,16 @@ class OrderApp {
     this.menu = null;
     this.cart = [];
     this.selectedCategory = 'all';
+    this.currentProduct = null;
+    this.currentIngredients = [];
+    this.currentSupplements = [];
     this.init();
   }
 
   async init() {
+    this.handleWelcomeScreen();
     this.applyBranding();
-    this.checkAdminMode(); // Vérifier si on vient de l'admin
+    this.checkAdminMode();
     this.showLoader(true);
     await this.loadMenu();
     this.loadCartFromStorage();
@@ -19,27 +23,39 @@ class OrderApp {
     this.showLoader(false);
   }
 
-  // Appliquer la configuration de marque
+  // ... (handleWelcomeScreen, applyBranding, checkAdminMode, loadMenu, showLoader, renderCategories, createCategoryButton, filterByCategory, renderProducts - unchanged until createProductCard)
+
+  // Gérer l'écran d'accueil (inchangé)
+  handleWelcomeScreen() {
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const enterBtn = document.getElementById('enter-menu');
+
+    if (!welcomeScreen) return;
+
+    if (sessionStorage.getItem('welcome-seen') === 'true') {
+      welcomeScreen.classList.add('hidden');
+    }
+
+    if (enterBtn) {
+      enterBtn.addEventListener('click', () => {
+        welcomeScreen.classList.add('hidden');
+        sessionStorage.setItem('welcome-seen', 'true');
+      });
+    }
+  }
+
   applyBranding() {
     if (!window.BRANDING) return;
-
-    // Titre de la page
     document.title = `${window.BRANDING.name} - Menu`;
     document.querySelector('meta[name="description"]').content = window.BRANDING.tagline;
-
-    // Logo
     const logoContainer = document.getElementById('brand-logo');
     if (window.BRANDING.logo.type === 'emoji') {
       logoContainer.textContent = window.BRANDING.logo.value;
     } else {
       logoContainer.innerHTML = `<img src="${window.BRANDING.logo.value}" alt="${window.BRANDING.logo.alt}" class="h-10 w-auto">`;
     }
-
-    // Nom et Tagline
     document.getElementById('brand-name').textContent = window.BRANDING.name;
     document.getElementById('brand-tagline').textContent = window.BRANDING.tagline;
-
-    // Background Image (si configurée)
     if (window.BRANDING.backgroundImage) {
       document.body.style.backgroundImage = `url('${window.BRANDING.backgroundImage}')`;
       document.body.style.backgroundSize = 'cover';
@@ -48,20 +64,17 @@ class OrderApp {
     }
   }
 
-  // Vérifier si on vient de l'interface admin
   checkAdminMode() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('from') === 'admin') {
       const adminBanner = document.getElementById('admin-banner');
       if (adminBanner) {
         adminBanner.classList.remove('hidden');
-        // Ajouter une classe au body pour ajuster les positions sticky
         document.body.classList.add('admin-mode');
       }
     }
   }
 
-  // Charger le menu depuis l'API
   async loadMenu() {
     try {
       const response = await fetch(`${CONFIG.API_URL}/menu`);
@@ -73,7 +86,6 @@ class OrderApp {
     }
   }
 
-  // Afficher/masquer le loader
   showLoader(show) {
     const loader = document.getElementById('loader');
     if (show) {
@@ -83,47 +95,35 @@ class OrderApp {
     }
   }
 
-  // Afficher les catégories
   renderCategories() {
     const container = document.getElementById('categories-filter');
-
-    // Vider le conteneur avant d'ajouter les boutons
     container.innerHTML = '';
-
-    // Bouton "Tout"
     const allBtn = this.createCategoryButton('all', 'Tout', '🍽️');
     container.appendChild(allBtn);
-
-    // Boutons catégories
     this.menu.categories.forEach(category => {
       const btn = this.createCategoryButton(category.id, category.name, category.icon);
       container.appendChild(btn);
     });
   }
 
-  // Créer un bouton catégorie
   createCategoryButton(id, name, icon) {
     const btn = document.createElement('button');
     btn.className = `px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all flex-shrink-0 ${this.selectedCategory === id
       ? 'category-badge-active'
       : 'category-badge-inactive'
-    }`;
+      }`;
     btn.innerHTML = `<span class="inline-flex items-center gap-1.5">${icon} <span>${name}</span></span>`;
     btn.addEventListener('click', () => this.filterByCategory(id));
     return btn;
   }
 
-  // Filtrer par catégorie
   filterByCategory(categoryId) {
     this.selectedCategory = categoryId;
     this.renderCategories();
     this.renderProducts();
-
-    // Scroll vers le haut des produits
     document.getElementById('products-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Afficher les produits
   renderProducts() {
     const container = document.getElementById('products-container');
     container.innerHTML = '';
@@ -133,7 +133,6 @@ class OrderApp {
       : this.menu.categories.filter(cat => cat.id === this.selectedCategory);
 
     categories.forEach(category => {
-      // Titre de catégorie
       const categoryTitle = document.createElement('div');
       categoryTitle.className = 'mb-4';
       categoryTitle.innerHTML = `
@@ -144,9 +143,8 @@ class OrderApp {
       `;
       container.appendChild(categoryTitle);
 
-      // Grille de produits
       const grid = document.createElement('div');
-      grid.className = 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8';
+      grid.className = 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8';
 
       category.products.forEach(product => {
         const card = this.createProductCard(product);
@@ -157,83 +155,231 @@ class OrderApp {
     });
   }
 
-  // Créer une carte produit
+  // Créer une carte produit (NOUVEAU DESIGN)
   createProductCard(product) {
     const card = document.createElement('div');
-    card.className = 'product-card bg-white rounded-lg shadow-md p-4 fade-in';
+    card.className = 'product-card bg-white rounded-xl shadow-md overflow-hidden flex flex-col fade-in h-full transform transition-all hover:shadow-lg hover:-translate-y-1';
 
-    const inCart = this.cart.find(item => item.id === product.id);
-    const quantity = inCart ? inCart.quantity : 0;
+    // Image en haut (Pleine largeur)
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'w-full h-48 bg-gray-100 overflow-hidden relative';
+    if (product.image) {
+      imageContainer.innerHTML = `<img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">`;
+    } else {
+      imageContainer.innerHTML = `<div class="w-full h-full flex items-center justify-center text-gray-300 text-4xl">🍽️</div>`;
+    }
+    card.appendChild(imageContainer);
 
-    card.innerHTML = `
-      <div class="flex justify-between items-start gap-3 mb-3">
-        <div class="flex-1">
-          <h3 class="font-semibold text-gray-800 text-lg">${product.name}</h3>
-          <p class="text-sm text-gray-500 mt-1">${product.description || ''}</p>
-          <div class="mt-2">
-            <span class="text-lg font-bold text-primary">${product.price.toFixed(2)} €</span>
-          </div>
-        </div>
-        ${product.image ? `
-          <div class="flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-gray-50">
-            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
-          </div>
-        ` : ''}
+    // Contenu
+    const content = document.createElement('div');
+    content.className = 'p-5 flex flex-col flex-1';
+
+    content.innerHTML = `
+      <div class="mb-2">
+        <h3 class="font-bold text-gray-800 text-xl leading-tight">${product.name}</h3>
+        <p class="text-sm text-gray-500 mt-2 line-clamp-2">${product.description || ''}</p>
       </div>
       
-      <div class="flex items-center justify-between mt-4">
-        ${quantity > 0 ? `
-          <div class="flex items-center space-x-2">
-            <button class="quantity-btn bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-8 h-8 flex items-center justify-center font-bold" 
-                    onclick="app.updateQuantity('${product.id}', ${quantity - 1})">
-              -
-            </button>
-            <span class="font-semibold text-gray-800 w-8 text-center">${quantity}</span>
-            <button class="quantity-btn bg-primary hover:bg-primary/90 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold" 
-                    onclick="app.updateQuantity('${product.id}', ${quantity + 1})">
-              +
-            </button>
-          </div>
-        ` : `
-          <button class="btn-ripple bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium transition-all"
-                  onclick="app.addToCart('${product.id}')">
-            Ajouter
-          </button>
-        `}
+      <div class="mt-auto pt-4 flex items-center justify-between">
+        <span class="text-xl font-bold text-gray-900">${product.price.toFixed(2)} €</span>
+        <button class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg font-medium transition-colors shadow-sm flex items-center gap-2"
+                onclick="app.openProductModal('${product.id}')">
+          <span>Ajouter</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        </button>
       </div>
     `;
 
+    card.appendChild(content);
     return card;
   }
 
-  // Ajouter au panier
-  addToCart(productId) {
+  // Ouvrir le modal de produit
+  openProductModal(productId) {
     const product = this.findProduct(productId);
     if (!product) return;
 
-    const existingItem = this.cart.find(item => item.id === productId);
+    this.currentProduct = product;
+    // Initialiser les ingrédients (tous présents par défaut : true)
+    this.currentIngredients = (product.ingredients || []).map(ing => ({ name: ing, active: true }));
+
+    // Initialiser les suppléments (tous absents par défaut : 0)
+    this.currentSupplements = (product.supplements || []).map(sup => ({ ...sup, quantity: 0 }));
+
+    // Remplir le modal
+    document.getElementById('modal-product-name').textContent = product.name;
+    document.getElementById('modal-product-description').textContent = product.description || '';
+
+    const imgEl = document.getElementById('modal-product-image');
+    if (product.image) {
+      imgEl.src = product.image;
+      imgEl.classList.remove('hidden');
+    } else {
+      imgEl.classList.add('hidden');
+    }
+
+    this.renderModalIngredients();
+    this.renderModalSupplements();
+    this.updateModalTotalPrice();
+
+    document.getElementById('product-modal').classList.remove('hidden');
+  }
+
+  renderModalIngredients() {
+    const list = document.getElementById('ingredients-list');
+    const msg = document.getElementById('no-ingredients-msg');
+
+    if (this.currentIngredients.length === 0) {
+      list.innerHTML = '';
+      msg.classList.remove('hidden');
+      return;
+    }
+
+    msg.classList.add('hidden');
+    list.innerHTML = this.currentIngredients.map((ing, index) => `
+      <div class="flex items-center justify-between p-3 rounded-lg border ${ing.active ? 'border-gray-200 bg-white' : 'border-gray-100 bg-gray-50 opacity-75'}">
+        <span class="font-medium ${ing.active ? 'text-gray-800' : 'text-gray-400 line-through'}">${ing.name}</span>
+        <div class="flex items-center gap-3">
+            <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors ${ing.active ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}"
+                    ${!ing.active ? 'disabled' : ''}
+                    onclick="app.toggleIngredient(${index}, false)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+            </button>
+            <span class="font-bold w-4 text-center ${ing.active ? 'text-gray-800' : 'text-gray-400'}">1</span>
+            <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors ${!ing.active ? 'bg-green-100 text-green-600 hover:bg-green-200' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}"
+                    ${ing.active ? 'disabled' : ''}
+                    onclick="app.toggleIngredient(${index}, true)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ... existing code ...
+  toggleIngredient(index, activate) {
+    if (this.currentIngredients[index]) {
+      this.currentIngredients[index].active = activate;
+      this.renderModalIngredients();
+    }
+  }
+
+  renderModalSupplements() {
+    // Créer ou récupérer le conteneur des suppléments
+    let container = document.getElementById('supplements-section');
+    if (!container) {
+      const parent = document.querySelector('#product-modal .p-6');
+      const ingredientsSection = document.querySelector('#product-modal .mb-6'); // Section Ingrédients
+
+      container = document.createElement('div');
+      container.id = 'supplements-section';
+      container.className = 'mb-6 border-t pt-4';
+      container.innerHTML = `
+        <h3 class="font-semibold text-gray-800 mb-3">Suppléments (Optionnel)</h3>
+        <div id="supplements-list" class="space-y-3"></div>
+      `;
+
+      // Insérer après la section ingrédients
+      ingredientsSection.insertAdjacentElement('afterend', container);
+    }
+
+    const list = document.getElementById('supplements-list');
+
+    if (this.currentSupplements.length === 0) {
+      container.classList.add('hidden');
+      return;
+    }
+
+    container.classList.remove('hidden');
+    list.innerHTML = this.currentSupplements.map((sup, index) => `
+      <div class="flex items-center justify-between p-3 rounded-lg border border-gray-200 bg-white">
+        <div class="flex flex-col">
+          <span class="font-medium text-gray-800">${sup.name}</span>
+          <span class="text-xs text-primary font-bold">+${sup.price.toFixed(2)} €</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors ${sup.quantity > 0 ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' : 'bg-gray-100 text-gray-300 cursor-not-allowed'}"
+                    ${sup.quantity === 0 ? 'disabled' : ''}
+                    onclick="app.toggleSupplement(${index}, -1)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+            </button>
+            <span class="font-bold w-4 text-center text-gray-800">${sup.quantity}</span>
+            <button class="w-8 h-8 flex items-center justify-center rounded-full transition-colors bg-primary hover:bg-primary/90 text-white"
+                    onclick="app.toggleSupplement(${index}, 1)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  toggleSupplement(index, delta) {
+    if (this.currentSupplements[index]) {
+      const newQuantity = this.currentSupplements[index].quantity + delta;
+      if (newQuantity >= 0) {
+        this.currentSupplements[index].quantity = newQuantity;
+        this.renderModalSupplements();
+        this.updateModalTotalPrice();
+      }
+    }
+  }
+
+  updateModalTotalPrice() {
+    let total = this.currentProduct.price;
+
+    // Ajouter le prix des suppléments
+    this.currentSupplements.forEach(sup => {
+      total += sup.price * sup.quantity;
+    });
+
+    document.getElementById('modal-product-price').textContent = `${total.toFixed(2)} €`;
+  }
+
+  confirmAddToCart() {
+    if (!this.currentProduct) return;
+
+    // Générer la liste des modifications
+    const modifications = this.currentIngredients
+      .filter(ing => !ing.active)
+      .map(ing => `Sans ${ing.name}`);
+
+    // Créer un ID unique basé sur les modifications pour regrouper les articles identiques
+    const uniqueId = `${this.currentProduct.id}-${modifications.join('-')}`;
+
+    const existingItem = this.cart.find(item => item.uniqueId === uniqueId);
 
     if (existingItem) {
       existingItem.quantity++;
     } else {
       this.cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1
+        uniqueId: uniqueId,
+        id: this.currentProduct.id,
+        name: this.currentProduct.name,
+        price: this.currentProduct.price,
+        quantity: 1,
+        modifications: modifications
       });
     }
 
     this.updateCart();
     this.saveCartToStorage();
+
+    // Fermer le modal
+    document.getElementById('product-modal').classList.add('hidden');
+    this.showToast('Produit ajouté au panier !', 'success');
   }
 
-  // Mettre à jour la quantité
-  updateQuantity(productId, newQuantity) {
+  // Ancienne méthode addToCart (gardée pour compatibilité si besoin, mais plus utilisée directement par les boutons)
+  addToCart(productId) {
+    this.openProductModal(productId);
+  }
+
+  // Mettre à jour la quantité (modifiée pour utiliser uniqueId)
+  updateQuantity(uniqueId, newQuantity) {
     if (newQuantity <= 0) {
-      this.cart = this.cart.filter(item => item.id !== productId);
+      this.cart = this.cart.filter(item => item.uniqueId !== uniqueId);
     } else {
-      const item = this.cart.find(item => item.id === productId);
+      const item = this.cart.find(item => item.uniqueId === uniqueId);
       if (item) {
         item.quantity = newQuantity;
       }
@@ -241,10 +387,8 @@ class OrderApp {
 
     this.updateCart();
     this.saveCartToStorage();
-    this.renderProducts(); // Re-render pour mettre à jour les boutons
   }
 
-  // Trouver un produit
   findProduct(productId) {
     for (const category of this.menu.categories) {
       const product = category.products.find(p => p.id === productId);
@@ -253,14 +397,12 @@ class OrderApp {
     return null;
   }
 
-  // Mettre à jour l'affichage du panier
   updateCart() {
     this.updateCartBadge();
     this.renderCartItems('desktop');
     this.renderCartItems('mobile');
   }
 
-  // Mettre à jour le badge du panier
   updateCartBadge() {
     const badge = document.getElementById('cart-badge');
     const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -273,7 +415,6 @@ class OrderApp {
     }
   }
 
-  // Afficher les articles du panier
   renderCartItems(device) {
     const container = document.getElementById(`cart-items-${device}`);
     const summary = document.getElementById(`cart-summary-${device}`);
@@ -295,21 +436,29 @@ class OrderApp {
     summary.classList.remove('hidden');
 
     container.innerHTML = this.cart.map(item => `
-      <div class="cart-item flex justify-between items-center py-3 border-b">
-        <div class="flex-1">
-          <p class="font-medium text-gray-800">${item.name}</p>
-          <p class="text-sm text-gray-500">${item.price.toFixed(2)} € × ${item.quantity}</p>
+      <div class="cart-item py-3 border-b">
+        <div class="flex justify-between items-start mb-2">
+          <div class="flex-1">
+            <p class="font-medium text-gray-800">${item.name}</p>
+            ${item.modifications && item.modifications.length > 0
+        ? `<div class="text-xs text-red-500 mt-1 space-y-0.5">${item.modifications.map(m => `<span>• ${m}</span>`).join('<br>')}</div>`
+        : ''}
+          </div>
+          <p class="text-sm font-bold text-gray-700 ml-2">${(item.price * item.quantity).toFixed(2)} €</p>
         </div>
-        <div class="flex items-center space-x-2">
-          <button class="quantity-btn bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full w-7 h-7 flex items-center justify-center text-sm" 
-                  onclick="app.updateQuantity('${item.id}', ${item.quantity - 1})">
-            -
-          </button>
-          <span class="font-semibold text-gray-800 w-6 text-center">${item.quantity}</span>
-          <button class="quantity-btn bg-primary hover:bg-primary/90 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm" 
-                  onclick="app.updateQuantity('${item.id}', ${item.quantity + 1})">
-            +
-          </button>
+        <div class="flex items-center justify-between">
+          <div class="text-xs text-gray-400">PU: ${item.price.toFixed(2)} €</div>
+          <div class="flex items-center space-x-2">
+            <button class="quantity-btn bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-7 h-7 flex items-center justify-center text-sm transition-colors" 
+                    onclick="app.updateQuantity('${item.uniqueId}', ${item.quantity - 1})">
+              -
+            </button>
+            <span class="font-semibold text-gray-800 w-6 text-center text-sm">${item.quantity}</span>
+            <button class="quantity-btn bg-primary hover:bg-primary/90 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm shadow-sm transition-colors" 
+                    onclick="app.updateQuantity('${item.uniqueId}', ${item.quantity + 1})">
+              +
+            </button>
+          </div>
         </div>
       </div>
     `).join('');
@@ -318,38 +467,47 @@ class OrderApp {
     totalEl.textContent = `${total.toFixed(2)} €`;
   }
 
-  // Calculer le total
   calculateTotal() {
     return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   }
 
-  // Sauvegarder le panier
   saveCartToStorage() {
     if (CONFIG.SETTINGS.autoSaveCart) {
       localStorage.setItem('qr-order-cart', JSON.stringify(this.cart));
     }
   }
 
-  // Charger le panier
   loadCartFromStorage() {
     if (CONFIG.SETTINGS.autoSaveCart) {
       const saved = localStorage.getItem('qr-order-cart');
       if (saved) {
-        this.cart = JSON.parse(saved);
-        this.updateCart();
+        try {
+          const parsedCart = JSON.parse(saved);
+          // Vérification de compatibilité : si un item n'a pas d'uniqueId, on reset le panier
+          const hasInvalidItems = parsedCart.some(item => !item.uniqueId);
+
+          if (hasInvalidItems) {
+            console.warn('Ancien format de panier détecté. Réinitialisation.');
+            this.clearCart();
+          } else {
+            this.cart = parsedCart;
+            this.updateCart();
+          }
+        } catch (e) {
+          console.error('Erreur lecture panier', e);
+          this.clearCart();
+        }
       }
     }
   }
 
-  // Vider le panier
   clearCart() {
     this.cart = [];
     this.updateCart();
     this.saveCartToStorage();
-    this.renderProducts();
+    // Plus besoin de renderProducts car on n'affiche plus les quantités sur les cartes
   }
 
-  // Ouvrir le modal de commande
   openCheckoutModal() {
     if (this.cart.length === 0) {
       this.showToast('Votre panier est vide', 'warning');
@@ -360,26 +518,27 @@ class OrderApp {
     const summary = document.getElementById('order-summary');
     const total = document.getElementById('order-total');
 
-    // Remplir le récapitulatif
     summary.innerHTML = this.cart.map(item => `
-      <div class="flex justify-between">
-        <span>${item.name} × ${item.quantity}</span>
-        <span>${(item.price * item.quantity).toFixed(2)} €</span>
+      <div class="flex justify-between items-start py-1">
+        <div class="flex-1">
+          <span class="block text-gray-800">${item.name} <span class="text-gray-500 text-xs">× ${item.quantity}</span></span>
+          ${item.modifications && item.modifications.length > 0
+        ? `<span class="text-xs text-red-500 block italic">${item.modifications.join(', ')}</span>`
+        : ''}
+        </div>
+        <span class="font-medium">${(item.price * item.quantity).toFixed(2)} €</span>
       </div>
     `).join('');
 
     total.textContent = `${this.calculateTotal().toFixed(2)} €`;
-
     modal.classList.remove('hidden');
   }
 
-  // Fermer le modal de commande
   closeCheckoutModal() {
     document.getElementById('checkout-modal').classList.add('hidden');
     document.getElementById('order-form').reset();
   }
 
-  // Envoyer la commande
   async submitOrder(formData) {
     this.showLoader(true);
 
@@ -416,23 +575,25 @@ class OrderApp {
     }
   }
 
-  // Afficher le modal de succès
   showSuccessModal() {
     document.getElementById('success-modal').classList.remove('hidden');
   }
 
-  // Fermer le modal de succès
   closeSuccessModal() {
     document.getElementById('success-modal').classList.add('hidden');
   }
 
-  // Afficher un toast
   showToast(message, type = 'info') {
-    // TODO: Implémenter un système de toast si besoin
-    alert(message);
+    // Implémentation simple d'un toast
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-full shadow-lg text-white font-medium z-50 fade-in ${type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-gray-800'}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
   }
 
-  // Configuration des événements
   setupEventListeners() {
     // Panier mobile
     document.getElementById('cart-toggle').addEventListener('click', () => {
@@ -480,9 +641,23 @@ class OrderApp {
     document.getElementById('close-success').addEventListener('click', () => {
       this.closeSuccessModal();
     });
+
+    // Modal Produit
+    document.getElementById('close-product-modal').addEventListener('click', () => {
+      document.getElementById('product-modal').classList.add('hidden');
+    });
+
+    document.getElementById('product-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'product-modal') {
+        document.getElementById('product-modal').classList.add('hidden');
+      }
+    });
+
+    document.getElementById('confirm-add-to-cart').addEventListener('click', () => {
+      this.confirmAddToCart();
+    });
   }
 
-  // Toggle panier mobile
   toggleCartModal() {
     const modal = document.getElementById('cart-modal');
     const content = document.getElementById('cart-modal-content');
@@ -502,4 +677,4 @@ class OrderApp {
 }
 
 // Initialiser l'application
-const app = new OrderApp();
+window.app = new OrderApp();

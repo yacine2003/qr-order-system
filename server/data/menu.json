@@ -10,14 +10,42 @@
           "name": "Salade César",
           "price": 8.5,
           "description": "Laitue, poulet, parmesan, croûtons",
-          "image": "images/salade.png"
+          "image": "images/salade.png",
+          "ingredients": [
+            "Laitue",
+            "Poulet",
+            "Parmesan",
+            "Croûtons",
+            "Sauce César"
+          ],
+          "supplements": [
+            {
+              "name": "Poulet Extra",
+              "price": 2.0
+            },
+            {
+              "name": "Œuf Dur",
+              "price": 1.0
+            }
+          ]
         },
         {
           "id": "oeuf-mayo",
           "name": "Œuf Mayonnaise",
           "price": 5,
           "description": "La tradition française",
-          "image": "images/salade.png"
+          "image": "images/salade.png",
+          "ingredients": [
+            "Œuf",
+            "Mayonnaise",
+            "Salade"
+          ],
+          "supplements": [
+            {
+              "name": "Portion de Frites",
+              "price": 3.0
+            }
+          ]
         }
       ]
     },
@@ -31,14 +59,53 @@
           "name": "Burger Maison",
           "price": 14.5,
           "description": "Bœuf charolais, cheddar, frites maison",
-          "image": "images/burger.png"
+          "image": "images/burger.png",
+          "ingredients": [
+            "Pain Admin",
+            "Steak Haché",
+            "Cheddar",
+            "Salade",
+            "Tomate",
+            "Oignon",
+            "Sauce Burger"
+          ],
+          "supplements": [
+            {
+              "name": "Double Steak",
+              "price": 4.0
+            },
+            {
+              "name": "Bacon",
+              "price": 1.5
+            },
+            {
+              "name": "Cheddar Extra",
+              "price": 1.0
+            }
+          ]
         },
         {
           "id": "bavette",
           "name": "Bavette d'Aloyau",
           "price": 16,
           "description": "Sauce échalote, légumes de saison",
-          "image": "images/burger.png"
+          "image": "images/burger.png",
+          "ingredients": [
+            "Bavette",
+            "Sauce Échalote",
+            "Frites",
+            "Salade"
+          ],
+          "supplements": [
+            {
+              "name": "Sauce Poivre",
+              "price": 0.5
+            },
+            {
+              "name": "Salade Verte",
+              "price": 2.0
+            }
+          ]
         }
       ]
     },
@@ -52,14 +119,31 @@
           "name": "Tiramisu",
           "price": 6.5,
           "description": "Recette du chef",
-          "image": "images/tiramisu.png"
+          "image": "images/tiramisu.png",
+          "ingredients": [
+            "Mascarpone",
+            "Café",
+            "Biscuit",
+            "Cacao"
+          ]
         },
         {
           "id": "creme-brulee",
           "name": "Crème Brûlée",
           "price": 6,
           "description": "Vanille de Madagascar",
-          "image": "images/tiramisu.png"
+          "image": "images/tiramisu.png",
+          "ingredients": [
+            "Crème",
+            "Vanille",
+            "Sucre Roux"
+          ],
+          "supplements": [
+            {
+              "name": "Boule de Glace Vanille",
+              "price": 1.5
+            }
+          ]
         }
       ]
     },
@@ -73,28 +157,61 @@
           "name": "Café",
           "price": 2.5,
           "description": "Espresso italien",
-          "image": "images/cafe.png"
+          "image": "images/cafe.png",
+          "ingredients": [
+            "Café",
+            "Sucre"
+          ]
         },
         {
           "id": "the",
           "name": "Thé",
           "price": 3,
           "description": "Vert, Noir ou Infusion",
-          "image": "images/cafe.png"
+          "image": "images/cafe.png",
+          "ingredients": [
+            "Thé",
+            "Sucre",
+            "Citron"
+          ]
         },
         {
           "id": "coca",
           "name": "Coca-Cola",
           "price": 3.5,
           "description": "33cl",
-          "image": "images/cafe.png"
+          "image": "images/cafe.png",
+          "ingredients": [
+            "Coca-Cola",
+            "Glaçons",
+            "Citron"
+          ],
+          "supplements": [
+            {
+              "name": "Sirop Citron",
+              "price": 0.5
+            }
+          ]
         },
         {
           "id": "eau",
           "name": "Eau minérale",
           "price": 2.5,
           "description": "50cl",
-          "image": "images/cafe.png"
+          "image": "images/cafe.png",
+          "ingredients": [
+            "Eau"
+          ],
+          "supplements": [
+            {
+              "name": "Sirop Fraise",
+              "price": 0.5
+            },
+            {
+              "name": "Sirop Menthe",
+              "price": 0.5
+            }
+          ]
         }
       ]
     },
@@ -108,14 +225,35 @@
           "name": "Portion de Frites",
           "price": 4.5,
           "description": "Frites fraîches maison",
-          "image": "images/burger.png"
+          "image": "images/burger.png",
+          "ingredients": [
+            "Frites",
+            "Ketchup",
+            "Mayonnaise"
+          ],
+          "supplements": [
+            {
+              "name": "Sauce Cheddar",
+              "price": 1.5
+            }
+          ]
         },
         {
           "id": "nuggets",
           "name": "Nuggets (x6)",
           "price": 5.5,
           "description": "Poulet croustillant",
-          "image": "images/burger.png"
+          "image": "images/burger.png",
+          "ingredients": [
+            "Nuggets",
+            "Sauce BBQ"
+          ],
+          "supplements": [
+            {
+              "name": "Nuggets x3",
+              "price": 2.5
+            }
+          ]
         }
       ]
     },
@@ -129,14 +267,46 @@
           "name": "Planche Mixte",
           "price": 15,
           "description": "Charcuterie et fromages affinés",
-          "image": "images/planche.png"
+          "image": "images/planche.png",
+          "ingredients": [
+            "Jambon de Pays",
+            "Saucisson",
+            "Fromage",
+            "Cornichons",
+            "Beurre",
+            "Pain"
+          ],
+          "supplements": [
+            {
+              "name": "Pain Extra",
+              "price": 1.0
+            },
+            {
+              "name": "Cornichons Extra",
+              "price": 0.5
+            }
+          ]
         },
         {
           "id": "charcuterie",
           "name": "Planche Charcuterie",
           "price": 13.5,
           "description": "Sélection du terroir",
-          "image": "images/planche.png"
+          "image": "images/planche.png",
+          "ingredients": [
+            "Jambon de Pays",
+            "Saucisson",
+            "Chorizo",
+            "Terrine",
+            "Cornichons",
+            "Pain"
+          ],
+          "supplements": [
+            {
+              "name": "Pain Extra",
+              "price": 1.0
+            }
+          ]
         }
       ]
     }
