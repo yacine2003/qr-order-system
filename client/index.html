@@ -30,13 +30,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <script src="translations.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="bg-gray-50 font-sans">
+<body class="font-sans">
 
   <!-- Welcome Screen (Page d'accueil) -->
   <div id="welcome-screen" class="welcome-overlay">
+    <!-- Langue (Absolu en haut à droite) -->
+    <div class="absolute top-4 right-4 z-50 flex gap-2">
+      <button onclick="app.setLanguage('fr')"
+        class="bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all text-xl"
+        title="Français">🇫🇷</button>
+      <button onclick="app.setLanguage('en')"
+        class="bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all text-xl"
+        title="English">🇬🇧</button>
+      <button onclick="app.setLanguage('es')"
+        class="bg-white/90 hover:bg-white p-2 rounded-full shadow-lg transition-all text-xl"
+        title="Español">🇪🇸</button>
+    </div>
+
     <div class="welcome-content">
       <div class="welcome-logo" id="brand-logo-welcome"></div>
       <h1 class="welcome-title" id="brand-name-welcome"></h1>
@@ -112,6 +126,16 @@
           </div>
         </div>
         <div class="flex items-center gap-3">
+          <!-- Sélecteur de langue -->
+          <div class="flex items-center space-x-1 bg-gray-100/50 backdrop-blur-sm rounded-full p-1 mr-1">
+            <button onclick="app.setLanguage('fr')" class="p-1.5 hover:bg-white rounded-full transition-all text-lg"
+              title="Français">🇫🇷</button>
+            <button onclick="app.setLanguage('en')" class="p-1.5 hover:bg-white rounded-full transition-all text-lg"
+              title="English">🇬🇧</button>
+            <button onclick="app.setLanguage('es')" class="p-1.5 hover:bg-white rounded-full transition-all text-lg"
+              title="Español">🇪🇸</button>
+          </div>
+
           <!-- Bouton Info Restaurant -->
           <button id="show-welcome-btn"
             class="p-3 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all flex items-center justify-center"
@@ -164,7 +188,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            Votre panier
+            <span id="cart-title-text-desktop">Votre panier</span>
           </h2>
           <div id="cart-items-desktop">
             <div class="text-center py-8 text-gray-400">
@@ -204,7 +228,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
-          Votre panier
+          <span id="cart-title-text-mobile">Votre panier</span>
         </h2>
         <button id="close-cart" class="p-2 hover:bg-gray-100 rounded-full">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

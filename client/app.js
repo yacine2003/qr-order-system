@@ -7,23 +7,145 @@ class OrderApp {
     this.currentProduct = null;
     this.currentIngredients = [];
     this.currentSupplements = [];
+    this.currentLanguage = localStorage.getItem('qr-order-lang') || 'fr';
     this.init();
   }
 
   async init() {
-    this.handleWelcomeScreen();
-    this.applyBranding();
-    this.checkAdminMode();
-    this.showLoader(true);
-    await this.loadMenu();
-    this.loadCartFromStorage();
-    this.renderCategories();
-    this.renderProducts();
-    this.setupEventListeners();
-    this.showLoader(false);
+    try {
+      this.handleWelcomeScreen();
+      this.applyBranding();
+      this.checkAdminMode();
+      this.showLoader(true);
+      await this.loadMenu();
+
+      if (!this.menu) {
+        throw new Error('Menu non chargé');
+      }
+
+      this.loadCartFromStorage();
+      this.updateUITexts();
+      this.renderCategories();
+      this.renderProducts();
+      this.setupEventListeners();
+    } catch (error) {
+      console.error('Erreur initialisation:', error);
+      this.showToast('Erreur lors du chargement de l\'application: ' + error.message, 'error');
+    } finally {
+      this.showLoader(false);
+    }
   }
 
-  // ... (handleWelcomeScreen, applyBranding, checkAdminMode, loadMenu, showLoader, renderCategories, createCategoryButton, filterByCategory, renderProducts - unchanged until createProductCard)
+  t(key) {
+    return TRANSLATIONS[this.currentLanguage][key] || key;
+  }
+
+  getLocalized(item, field) {
+    if (!item.translations || !item.translations[this.currentLanguage]) {
+      return item[field];
+    }
+    return item.translations[this.currentLanguage][field] || item[field];
+  }
+
+  getLocalizedArray(item, field) {
+    if (!item.translations || !item.translations[this.currentLanguage] || !item.translations[this.currentLanguage][field]) {
+      return item[field] || [];
+    }
+    return item.translations[this.currentLanguage][field];
+  }
+
+  setLanguage(lang) {
+    this.currentLanguage = lang;
+    localStorage.setItem('qr-order-lang', lang);
+    this.updateUITexts();
+    this.renderCategories();
+    this.renderProducts();
+    this.updateCart();
+  }
+
+  updateUITexts() {
+    // Welcome Screen
+    const enterBtn = document.getElementById('enter-menu');
+    if (enterBtn) enterBtn.textContent = this.t('welcome_btn');
+
+    // Status text (if visible)
+    const statusText = document.getElementById('open-status-text');
+    if (statusText) {
+      // Logic to recreate status text based on current status... simplifying for now
+      // statusText.textContent = this.t('open_status'); 
+    }
+
+    // Modal texts
+    const confirmBtn = document.getElementById('confirm-add-to-cart');
+    if (confirmBtn) confirmBtn.textContent = this.t('add_to_cart_btn');
+
+    const noIngMsg = document.getElementById('no-ingredients-msg');
+    if (noIngMsg) noIngMsg.textContent = this.t('no_ingredients');
+
+    // Cart texts
+    const cartTitleDesktop = document.getElementById('cart-title-text-desktop');
+    if (cartTitleDesktop) cartTitleDesktop.textContent = this.t('cart_title');
+
+    const totalLabelDesktop = document.querySelector('#cart-total-desktop')?.previousElementSibling;
+    if (totalLabelDesktop) totalLabelDesktop.textContent = this.t('total');
+
+    const checkoutBtnDesktop = document.getElementById('checkout-btn-desktop');
+    if (checkoutBtnDesktop) checkoutBtnDesktop.textContent = this.t('order_btn');
+
+    // Mobile cart
+    const cartTitleMobile = document.getElementById('cart-title-text-mobile');
+    if (cartTitleMobile) cartTitleMobile.textContent = this.t('cart_title');
+
+    const checkoutBtnMobile = document.getElementById('checkout-btn-mobile');
+    if (checkoutBtnMobile) checkoutBtnMobile.textContent = this.t('order_btn');
+
+    // Checkout Modal
+    const checkoutTitle = document.querySelector('#checkout-modal h2');
+    if (checkoutTitle) checkoutTitle.textContent = this.t('checkout_title');
+
+    const nameLabel = document.querySelector('label[for="customer-name"]');
+    if (nameLabel) nameLabel.textContent = this.t('form_name');
+
+    const tableLabel = document.querySelector('label[for="table-number"]');
+    if (tableLabel) tableLabel.textContent = this.t('form_table');
+
+    const commentLabel = document.querySelector('label[for="comment"]');
+    if (commentLabel) commentLabel.textContent = this.t('form_comment');
+
+    const cancelBtn = document.getElementById('cancel-order');
+    if (cancelBtn) cancelBtn.textContent = this.t('cancel_btn');
+
+    const submitBtn = document.querySelector('#order-form button[type="submit"]');
+    if (submitBtn) submitBtn.textContent = this.t('validate_btn');
+
+    // Success Modal
+    const successTitle = document.querySelector('#success-modal h3');
+    if (successTitle) successTitle.textContent = this.t('success_title');
+
+    const successMsg = document.querySelector('#success-modal p:nth-of-type(1)');
+    if (successMsg) successMsg.textContent = this.t('success_msg');
+
+    const successSub = document.querySelector('#success-modal p:nth-of-type(2)');
+    if (successSub) successSub.textContent = this.t('success_sub');
+
+    const closeSuccessBtn = document.getElementById('close-success');
+    if (closeSuccessBtn) closeSuccessBtn.textContent = this.t('welcome_btn'); // Retour
+  }
+
+  // ... (existing methods needs update)
+
+  renderCategories() {
+    const container = document.getElementById('categories-filter');
+    if (!container) return;
+    container.innerHTML = '';
+    const allBtn = this.createCategoryButton('all', this.t('filter_all'), '🍽️');
+    container.appendChild(allBtn);
+    this.menu.categories.forEach(category => {
+      const name = this.getLocalized(category, 'name');
+      const btn = this.createCategoryButton(category.id, name, category.icon);
+      container.appendChild(btn);
+    });
+  }
 
   // Gérer l'écran d'accueil (inchangé)
   handleWelcomeScreen() {
@@ -36,12 +158,7 @@ class OrderApp {
       welcomeScreen.classList.add('hidden');
     }
 
-    if (enterBtn) {
-      enterBtn.addEventListener('click', () => {
-        welcomeScreen.classList.add('hidden');
-        sessionStorage.setItem('welcome-seen', 'true');
-      });
-    }
+    // Event listener moved to setupEventListeners for consistency
   }
 
   applyBranding() {
@@ -95,16 +212,6 @@ class OrderApp {
     }
   }
 
-  renderCategories() {
-    const container = document.getElementById('categories-filter');
-    container.innerHTML = '';
-    const allBtn = this.createCategoryButton('all', 'Tout', '🍽️');
-    container.appendChild(allBtn);
-    this.menu.categories.forEach(category => {
-      const btn = this.createCategoryButton(category.id, category.name, category.icon);
-      container.appendChild(btn);
-    });
-  }
 
   createCategoryButton(id, name, icon) {
     const btn = document.createElement('button');
@@ -138,7 +245,7 @@ class OrderApp {
       categoryTitle.innerHTML = `
         <h2 class="text-2xl font-bold text-gray-800 flex items-center">
           <span class="text-3xl mr-2">${category.icon}</span>
-          ${category.name}
+          ${this.getLocalized(category, 'name')}
         </h2>
       `;
       container.appendChild(categoryTitle);
@@ -176,15 +283,15 @@ class OrderApp {
 
     content.innerHTML = `
       <div class="mb-2">
-        <h3 class="font-bold text-gray-800 text-xl leading-tight">${product.name}</h3>
-        <p class="text-sm text-gray-500 mt-2 line-clamp-2">${product.description || ''}</p>
+        <h3 class="font-bold text-gray-800 text-xl leading-tight">${this.getLocalized(product, 'name')}</h3>
+        <p class="text-sm text-gray-500 mt-2 line-clamp-2">${this.getLocalized(product, 'description') || ''}</p>
       </div>
       
       <div class="mt-auto pt-4 flex items-center justify-between">
         <span class="text-xl font-bold text-gray-900">${product.price.toFixed(2)} €</span>
         <button class="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg font-medium transition-colors shadow-sm flex items-center gap-2"
                 onclick="app.openProductModal('${product.id}')">
-          <span>Ajouter</span>
+          <span>${this.t('add_btn')}</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         </button>
       </div>
@@ -201,14 +308,15 @@ class OrderApp {
 
     this.currentProduct = product;
     // Initialiser les ingrédients (tous présents par défaut : true)
-    this.currentIngredients = (product.ingredients || []).map(ing => ({ name: ing, active: true }));
+    const ingredients = this.getLocalizedArray(product, 'ingredients');
+    this.currentIngredients = (ingredients || []).map(ing => ({ name: ing, active: true }));
 
     // Initialiser les suppléments (tous absents par défaut : 0)
     this.currentSupplements = (product.supplements || []).map(sup => ({ ...sup, quantity: 0 }));
 
     // Remplir le modal
-    document.getElementById('modal-product-name').textContent = product.name;
-    document.getElementById('modal-product-description').textContent = product.description || '';
+    document.getElementById('modal-product-name').textContent = this.getLocalized(product, 'name');
+    document.getElementById('modal-product-description').textContent = this.getLocalized(product, 'description') || '';
 
     const imgEl = document.getElementById('modal-product-image');
     if (product.image) {
@@ -275,7 +383,7 @@ class OrderApp {
       container.id = 'supplements-section';
       container.className = 'mb-6 border-t pt-4';
       container.innerHTML = `
-        <h3 class="font-semibold text-gray-800 mb-3">Suppléments (Optionnel)</h3>
+        <h3 class="font-semibold text-gray-800 mb-3">${this.t('supplements_title')}</h3>
         <div id="supplements-list" class="space-y-3"></div>
       `;
 
@@ -294,7 +402,7 @@ class OrderApp {
     list.innerHTML = this.currentSupplements.map((sup, index) => `
       <div class="flex items-center justify-between p-3 rounded-lg border border-gray-200 bg-white">
         <div class="flex flex-col">
-          <span class="font-medium text-gray-800">${sup.name}</span>
+          <span class="font-medium text-gray-800">${this.getLocalized(sup, 'name')}</span>
           <span class="text-xs text-primary font-bold">+${sup.price.toFixed(2)} €</span>
         </div>
         <div class="flex items-center gap-3">
@@ -341,7 +449,7 @@ class OrderApp {
     // Générer la liste des modifications
     const modifications = this.currentIngredients
       .filter(ing => !ing.active)
-      .map(ing => `Sans ${ing.name}`);
+      .map(ing => `${this.t('sans')} ${ing.name}`);
 
     // Créer un ID unique basé sur les modifications pour regrouper les articles identiques
     const uniqueId = `${this.currentProduct.id}-${modifications.join('-')}`;
@@ -426,7 +534,7 @@ class OrderApp {
           <svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
           </svg>
-          <p>Votre panier est vide</p>
+          <p>${this.t('cart_empty')}</p>
         </div>
       `;
       summary.classList.add('hidden');
@@ -435,14 +543,17 @@ class OrderApp {
 
     summary.classList.remove('hidden');
 
-    container.innerHTML = this.cart.map(item => `
+    container.innerHTML = this.cart.map(item => {
+      const product = this.findProduct(item.id);
+      const name = product ? this.getLocalized(product, 'name') : item.name;
+      return `
       <div class="cart-item py-3 border-b">
         <div class="flex justify-between items-start mb-2">
           <div class="flex-1">
-            <p class="font-medium text-gray-800">${item.name}</p>
+            <p class="font-medium text-gray-800">${name}</p>
             ${item.modifications && item.modifications.length > 0
-        ? `<div class="text-xs text-red-500 mt-1 space-y-0.5">${item.modifications.map(m => `<span>• ${m}</span>`).join('<br>')}</div>`
-        : ''}
+          ? `<div class="text-xs text-red-500 mt-1 space-y-0.5">${item.modifications.map(m => `<span>• ${m}</span>`).join('<br>')}</div>`
+          : ''}
           </div>
           <p class="text-sm font-bold text-gray-700 ml-2">${(item.price * item.quantity).toFixed(2)} €</p>
         </div>
@@ -461,7 +572,8 @@ class OrderApp {
           </div>
         </div>
       </div>
-    `).join('');
+    `;
+    }).join('');
 
     const total = this.calculateTotal();
     totalEl.textContent = `${total.toFixed(2)} €`;
@@ -595,6 +707,15 @@ class OrderApp {
   }
 
   setupEventListeners() {
+    // Welcome Screen
+    const enterBtn = document.getElementById('enter-menu');
+    if (enterBtn) {
+      enterBtn.addEventListener('click', () => {
+        document.getElementById('welcome-screen').classList.add('hidden');
+        sessionStorage.setItem('welcome-seen', 'true');
+      });
+    }
+
     // Panier mobile
     document.getElementById('cart-toggle').addEventListener('click', () => {
       this.toggleCartModal();

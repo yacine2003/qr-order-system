@@ -4,6 +4,14 @@
       "id": "entrees",
       "name": "Entrées",
       "icon": "🥗",
+      "translations": {
+        "en": {
+          "name": "Starters"
+        },
+        "es": {
+          "name": "Entrantes"
+        }
+      },
       "products": [
         {
           "id": "salade-cesar",
@@ -18,14 +26,54 @@
             "Croûtons",
             "Sauce César"
           ],
+          "translations": {
+            "en": {
+              "name": "Caesar Salad",
+              "description": "Lettuce, chicken, parmesan, croutons",
+              "ingredients": [
+                "Lettuce",
+                "Chicken",
+                "Parmesan",
+                "Croutons",
+                "Caesar Sauce"
+              ]
+            },
+            "es": {
+              "name": "Ensalada César",
+              "description": "Lechuga, pollo, parmesano, picatostes",
+              "ingredients": [
+                "Lechuga",
+                "Pollo",
+                "Parmesano",
+                "Picatostes",
+                "Salsa César"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Poulet Extra",
-              "price": 2.0
+              "price": 2.0,
+              "translations": {
+                "en": {
+                  "name": "Extra Chicken"
+                },
+                "es": {
+                  "name": "Pollo Extra"
+                }
+              }
             },
             {
               "name": "Œuf Dur",
-              "price": 1.0
+              "price": 1.0,
+              "translations": {
+                "en": {
+                  "name": "Hard Boiled Egg"
+                },
+                "es": {
+                  "name": "Huevo Duro"
+                }
+              }
             }
           ]
         },
@@ -40,10 +88,38 @@
             "Mayonnaise",
             "Salade"
           ],
+          "translations": {
+            "en": {
+              "name": "Egg Mayonnaise",
+              "description": "The French tradition",
+              "ingredients": [
+                "Egg",
+                "Mayonnaise",
+                "Lettuce"
+              ]
+            },
+            "es": {
+              "name": "Huevo Mayonesa",
+              "description": "La tradición francesa",
+              "ingredients": [
+                "Huevo",
+                "Mayonesa",
+                "Lechuga"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Portion de Frites",
-              "price": 3.0
+              "price": 3.0,
+              "translations": {
+                "en": {
+                  "name": "Portion of Fries"
+                },
+                "es": {
+                  "name": "Porción de Papas Fritas"
+                }
+              }
             }
           ]
         }
@@ -53,6 +129,14 @@
       "id": "plats",
       "name": "Plats",
       "icon": "🍲",
+      "translations": {
+        "en": {
+          "name": "Main Courses"
+        },
+        "es": {
+          "name": "Platos Principales"
+        }
+      },
       "products": [
         {
           "id": "burger",
@@ -69,18 +153,70 @@
             "Oignon",
             "Sauce Burger"
           ],
+          "translations": {
+            "en": {
+              "name": "House Burger",
+              "description": "Charolais beef, cheddar, homemade fries",
+              "ingredients": [
+                "Bun",
+                "Beef Patty",
+                "Cheddar",
+                "Lettuce",
+                "Tomato",
+                "Onion",
+                "Burger Sauce"
+              ]
+            },
+            "es": {
+              "name": "Hamburguesa de la Casa",
+              "description": "Carne charolais, cheddar, papas fritas caseras",
+              "ingredients": [
+                "Pan",
+                "Carne Picada",
+                "Cheddar",
+                "Lechuga",
+                "Tomate",
+                "Cebolla",
+                "Salsa Burger"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Double Steak",
-              "price": 4.0
+              "price": 4.0,
+              "translations": {
+                "en": {
+                  "name": "Double Patty"
+                },
+                "es": {
+                  "name": "Doble Carne"
+                }
+              }
             },
             {
               "name": "Bacon",
-              "price": 1.5
+              "price": 1.5,
+              "translations": {
+                "en": {
+                  "name": "Bacon"
+                },
+                "es": {
+                  "name": "Tocino"
+                }
+              }
             },
             {
               "name": "Cheddar Extra",
-              "price": 1.0
+              "price": 1.0,
+              "translations": {
+                "en": {
+                  "name": "Extra Cheddar"
+                },
+                "es": {
+                  "name": "Cheddar Extra"
+                }
+              }
             }
           ]
         },
@@ -96,14 +232,52 @@
             "Frites",
             "Salade"
           ],
+          "translations": {
+            "en": {
+              "name": "Sirloin Steak",
+              "description": "Shallot sauce, seasonal vegetables",
+              "ingredients": [
+                "Sirloin",
+                "Shallot Sauce",
+                "Fries",
+                "Lettuce"
+              ]
+            },
+            "es": {
+              "name": "Bavette (Filete)",
+              "description": "Salsa de chalota, verduras de temporada",
+              "ingredients": [
+                "Filete",
+                "Salsa Chalota",
+                "Papas Fritas",
+                "Lechuga"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Sauce Poivre",
-              "price": 0.5
+              "price": 0.5,
+              "translations": {
+                "en": {
+                  "name": "Pepper Sauce"
+                },
+                "es": {
+                  "name": "Salsa Pimienta"
+                }
+              }
             },
             {
               "name": "Salade Verte",
-              "price": 2.0
+              "price": 2.0,
+              "translations": {
+                "en": {
+                  "name": "Green Salad"
+                },
+                "es": {
+                  "name": "Ensalada Verde"
+                }
+              }
             }
           ]
         }
@@ -113,6 +287,14 @@
       "id": "desserts",
       "name": "Desserts",
       "icon": "🍰",
+      "translations": {
+        "en": {
+          "name": "Desserts"
+        },
+        "es": {
+          "name": "Postres"
+        }
+      },
       "products": [
         {
           "id": "tiramisu",
@@ -125,7 +307,29 @@
             "Café",
             "Biscuit",
             "Cacao"
-          ]
+          ],
+          "translations": {
+            "en": {
+              "name": "Tiramisu",
+              "description": "Chef's recipe",
+              "ingredients": [
+                "Mascarpone",
+                "Coffee",
+                "Biscuit",
+                "Cocoa"
+              ]
+            },
+            "es": {
+              "name": "Tiramisú",
+              "description": "Receta del chef",
+              "ingredients": [
+                "Mascarpone",
+                "Café",
+                "Galleta",
+                "Cacao"
+              ]
+            }
+          }
         },
         {
           "id": "creme-brulee",
@@ -138,10 +342,38 @@
             "Vanille",
             "Sucre Roux"
           ],
+          "translations": {
+            "en": {
+              "name": "Crème Brûlée",
+              "description": "Madagascar Vanilla",
+              "ingredients": [
+                "Cream",
+                "Vanilla",
+                "Brown Sugar"
+              ]
+            },
+            "es": {
+              "name": "Crema Catalana",
+              "description": "Vainilla de Madagascar",
+              "ingredients": [
+                "Crema",
+                "Vainilla",
+                "Azúcar Moreno"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Boule de Glace Vanille",
-              "price": 1.5
+              "price": 1.5,
+              "translations": {
+                "en": {
+                  "name": "Vanilla Ice Cream Scoop"
+                },
+                "es": {
+                  "name": "Bola de Helado de Vainilla"
+                }
+              }
             }
           ]
         }
@@ -151,6 +383,14 @@
       "id": "boissons",
       "name": "Boissons",
       "icon": "☕",
+      "translations": {
+        "en": {
+          "name": "Drinks"
+        },
+        "es": {
+          "name": "Bebidas"
+        }
+      },
       "products": [
         {
           "id": "cafe",
@@ -161,7 +401,25 @@
           "ingredients": [
             "Café",
             "Sucre"
-          ]
+          ],
+          "translations": {
+            "en": {
+              "name": "Espresso",
+              "description": "Italian espresso",
+              "ingredients": [
+                "Coffee",
+                "Sugar"
+              ]
+            },
+            "es": {
+              "name": "Café",
+              "description": "Espresso italiano",
+              "ingredients": [
+                "Café",
+                "Azúcar"
+              ]
+            }
+          }
         },
         {
           "id": "the",
@@ -173,7 +431,27 @@
             "Thé",
             "Sucre",
             "Citron"
-          ]
+          ],
+          "translations": {
+            "en": {
+              "name": "Tea",
+              "description": "Green, Black or Herbal",
+              "ingredients": [
+                "Tea",
+                "Sugar",
+                "Lemon"
+              ]
+            },
+            "es": {
+              "name": "Té",
+              "description": "Verde, Negro o Infusión",
+              "ingredients": [
+                "Té",
+                "Azúcar",
+                "Limón"
+              ]
+            }
+          }
         },
         {
           "id": "coca",
@@ -186,10 +464,38 @@
             "Glaçons",
             "Citron"
           ],
+          "translations": {
+            "en": {
+              "name": "Coca-Cola",
+              "description": "33cl",
+              "ingredients": [
+                "Coca-Cola",
+                "Ice",
+                "Lemon"
+              ]
+            },
+            "es": {
+              "name": "Coca-Cola",
+              "description": "33cl",
+              "ingredients": [
+                "Coca-Cola",
+                "Hielo",
+                "Limón"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Sirop Citron",
-              "price": 0.5
+              "price": 0.5,
+              "translations": {
+                "en": {
+                  "name": "Lemon Syrup"
+                },
+                "es": {
+                  "name": "Jarabe de Limón"
+                }
+              }
             }
           ]
         },
@@ -202,14 +508,46 @@
           "ingredients": [
             "Eau"
           ],
+          "translations": {
+            "en": {
+              "name": "Mineral Water",
+              "description": "50cl",
+              "ingredients": [
+                "Water"
+              ]
+            },
+            "es": {
+              "name": "Agua Mineral",
+              "description": "50cl",
+              "ingredients": [
+                "Agua"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Sirop Fraise",
-              "price": 0.5
+              "price": 0.5,
+              "translations": {
+                "en": {
+                  "name": "Strawberry Syrup"
+                },
+                "es": {
+                  "name": "Jarabe de Fresa"
+                }
+              }
             },
             {
               "name": "Sirop Menthe",
-              "price": 0.5
+              "price": 0.5,
+              "translations": {
+                "en": {
+                  "name": "Mint Syrup"
+                },
+                "es": {
+                  "name": "Jarabe de Menta"
+                }
+              }
             }
           ]
         }
@@ -219,6 +557,14 @@
       "id": "snacks",
       "name": "Snacks",
       "icon": "🍟",
+      "translations": {
+        "en": {
+          "name": "Snacks"
+        },
+        "es": {
+          "name": "Aperitivos"
+        }
+      },
       "products": [
         {
           "id": "frites",
@@ -231,10 +577,38 @@
             "Ketchup",
             "Mayonnaise"
           ],
+          "translations": {
+            "en": {
+              "name": "Fries",
+              "description": "Homemade fresh fries",
+              "ingredients": [
+                "Fries",
+                "Ketchup",
+                "Mayonnaise"
+              ]
+            },
+            "es": {
+              "name": "Papas Fritas",
+              "description": "Papas fritas caseras",
+              "ingredients": [
+                "Papas Fritas",
+                "Ketchup",
+                "Mayonesa"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Sauce Cheddar",
-              "price": 1.5
+              "price": 1.5,
+              "translations": {
+                "en": {
+                  "name": "Cheddar Sauce"
+                },
+                "es": {
+                  "name": "Salsa Cheddar"
+                }
+              }
             }
           ]
         },
@@ -248,10 +622,36 @@
             "Nuggets",
             "Sauce BBQ"
           ],
+          "translations": {
+            "en": {
+              "name": "Nuggets (x6)",
+              "description": "Crispy chicken",
+              "ingredients": [
+                "Nuggets",
+                "BBQ Sauce"
+              ]
+            },
+            "es": {
+              "name": "Nuggets (x6)",
+              "description": "Pollo crujiente",
+              "ingredients": [
+                "Nuggets",
+                "Salsa BBQ"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Nuggets x3",
-              "price": 2.5
+              "price": 2.5,
+              "translations": {
+                "en": {
+                  "name": "Nuggets x3"
+                },
+                "es": {
+                  "name": "Nuggets x3"
+                }
+              }
             }
           ]
         }
@@ -261,6 +661,14 @@
       "id": "planches",
       "name": "Planches",
       "icon": "🧀",
+      "translations": {
+        "en": {
+          "name": "Boards"
+        },
+        "es": {
+          "name": "Tablas"
+        }
+      },
       "products": [
         {
           "id": "mixte",
@@ -276,14 +684,56 @@
             "Beurre",
             "Pain"
           ],
+          "translations": {
+            "en": {
+              "name": "Mixed Board",
+              "description": "Cured meats and aged cheeses",
+              "ingredients": [
+                "Country Ham",
+                "Sausage",
+                "Cheese",
+                "Pickles",
+                "Butter",
+                "Bread"
+              ]
+            },
+            "es": {
+              "name": "Tabla Mixta",
+              "description": "Embutidos y quesos curados",
+              "ingredients": [
+                "Jamón Serrano",
+                "Salchichón",
+                "Queso",
+                "Pepinillos",
+                "Mantequilla",
+                "Pan"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Pain Extra",
-              "price": 1.0
+              "price": 1.0,
+              "translations": {
+                "en": {
+                  "name": "Extra Bread"
+                },
+                "es": {
+                  "name": "Pan Extra"
+                }
+              }
             },
             {
               "name": "Cornichons Extra",
-              "price": 0.5
+              "price": 0.5,
+              "translations": {
+                "en": {
+                  "name": "Extra Pickles"
+                },
+                "es": {
+                  "name": "Pepinillos Extra"
+                }
+              }
             }
           ]
         },
@@ -301,10 +751,44 @@
             "Cornichons",
             "Pain"
           ],
+          "translations": {
+            "en": {
+              "name": "Charcuterie Board",
+              "description": "Local selection",
+              "ingredients": [
+                "Country Ham",
+                "Sausage",
+                "Chorizo",
+                "Terrine",
+                "Pickles",
+                "Bread"
+              ]
+            },
+            "es": {
+              "name": "Tabla de Embutidos",
+              "description": "Selección local",
+              "ingredients": [
+                "Jamón Serrano",
+                "Salchichón",
+                "Chorizo",
+                "Terrina",
+                "Pepinillos",
+                "Pan"
+              ]
+            }
+          },
           "supplements": [
             {
               "name": "Pain Extra",
-              "price": 1.0
+              "price": 1.0,
+              "translations": {
+                "en": {
+                  "name": "Extra Bread"
+                },
+                "es": {
+                  "name": "Pan Extra"
+                }
+              }
             }
           ]
         }

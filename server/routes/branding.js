@@ -5,12 +5,31 @@ const path = require('path');
 
 const brandingFile = path.join(__dirname, '../data/branding.json');
 
+let cachedBranding = null;
+let lastReadTimeBranding = 0;
+const CACHE_DURATION = 60 * 1000; // 1 minute
+
+function getBrandingData() {
+  const now = Date.now();
+  if (cachedBranding && (now - lastReadTimeBranding < CACHE_DURATION)) {
+    return cachedBranding;
+  }
+
+  if (fs.existsSync(brandingFile)) {
+    const data = fs.readFileSync(brandingFile, 'utf8');
+    cachedBranding = JSON.parse(data);
+    lastReadTimeBranding = now;
+    return cachedBranding;
+  }
+  return null;
+}
+
 // GET - Récupérer la configuration actuelle (Public)
 router.get('/', (req, res) => {
   try {
-    if (fs.existsSync(brandingFile)) {
-      const data = fs.readFileSync(brandingFile, 'utf8');
-      const branding = JSON.parse(data);
+    const branding = getBrandingData();
+
+    if (branding) {
       res.json(branding);
     } else {
       // Configuration par défaut
@@ -71,6 +90,9 @@ router.post('/', requireSuperAdmin, (req, res) => {
 
     // Sauvegarder
     fs.writeFileSync(brandingFile, JSON.stringify(branding, null, 2));
+
+    // Invalider le cache
+    cachedBranding = null;
 
     console.log('✅ Configuration branding mise à jour');
 
